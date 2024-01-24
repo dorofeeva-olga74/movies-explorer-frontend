@@ -1,0 +1,139 @@
+.contextBurgerMenu {
+    display: block;
+    position: absolute;
+    flex-direction: column;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    background: rgba(32, 32, 32, 1);
+    width: 520px;   
+    opacity: 0;
+    visibility: hidden;
+    z-index: 5;
+    transition: all ease-in-out 1s;
+}
+
+.contextBurgerMenu_opened {
+    visibility: visible;
+    opacity: 1;
+    position: fixed;
+}
+
+.contextBurgerMenu__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    align-items: center;
+    padding: 0;
+    background: #202020;
+}
+
+.contextBurgerMenu__close-button {
+    position: absolute;
+    width: 27px;
+    height: 27px;
+    color: #FFFFFF;
+    top: 21.4px;
+    right: 26.4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    background-image: url("../../images/Clouse.svg");
+    background-repeat: no-repeat;
+    object-fit: cover;
+    padding: 0;
+}
+
+.contextBurgerMenu__nav {
+    display: flex;
+    margin: 159px 90px 0 90px;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.contextBurgerMenu__link {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: auto;
+    padding: 0;
+    width: fit-content;
+    box-sizing: border-box;
+    text-decoration: none;
+    cursor: pointer;
+}
+.contextBurgerMenu__link:hover {
+    opacity: 0.7;
+}
+
+.contextBurgerMenu__current::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+}
+
+.contextBurgerMenu__current {
+    position: relative;
+}
+.contextBurgerMenu__account-button {
+    position: absolute;
+    bottom: 90px;
+    transform: translateX(50%);
+    right: 50%;    
+}
+
+.contextBurgerMenu__account {
+    display: flex;    
+    margin: 0;    
+}
+
+.contextBurgerMenu__icon {
+    background: #313131;
+    margin: 1px 0 0 7px;
+}
+
+@media screen and (max-width:550px) {
+    .contextBurgerMenu {
+        width: 100%;
+        height: 100%;
+    }
+
+    .contextBurgerMenu__close-button {
+        top: 13.39px;
+        right: 18.40px;
+    }
+    .contextBurgerMenu__account-button {        
+        bottom: 46px;        
+    }    
+
+    .contextBurgerMenu__nav {
+        margin: 144px 10px 0 10px;
+        gap: 24px;
+    }
+
+    .contextBurgerMenu__current::after {
+        bottom: -7px;
+    }
+
+    .contextBurgerMenu__account {
+        bottom: 46px;
+    }
+
+    .contextBurgerMenu__icon {
+        background: #313131;
+        margin: 1px 0 0 6px;
+    }
+}

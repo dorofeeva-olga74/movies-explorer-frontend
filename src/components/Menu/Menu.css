@@ -1,0 +1,50 @@
+.menu {
+    display: flex;
+    flex-direction: row;
+    padding-left: 64px;
+}
+
+.menu__movies {
+    color: #FFF;
+    text-align: right;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    text-decoration: none;
+}
+.menu__movies:hover{
+    opacity: 0.8;
+}
+
+.menu__movies_saved {
+    width: 100%;
+    margin: auto 0 auto 16px;
+}
+
+@media screen and (max-width:768px) {
+    .menu {
+        display: none;
+    }
+
+    .header__textLogin {
+        margin: 21px 30px 21px 30px;
+    }
+}
+
+@media screen and (max-width:550px) {
+    .header__textAuth {
+        font-size: 10px;
+    }
+
+    .header__textLogin {
+        margin: 24px 14px 24px 14px;
+        font-size: 10px;
+    }
+}

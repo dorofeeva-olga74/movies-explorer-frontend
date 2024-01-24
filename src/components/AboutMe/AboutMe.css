@@ -1,0 +1,212 @@
+.aboutMe {
+    flex-shrink: 0;
+    padding: 110px 0 115px 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', 'Arial', sans-serif;
+    align-items: stretch;
+    width: calc(100% - 70px * 2);
+    background: #202020;
+}
+
+.aboutMe_header {
+    color: #FFF;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.88px;
+    margin: 0 auto 23px 0;
+    padding: 0;
+    display: flex;
+}
+
+.aboutMe__line {
+    background-color: #DADADA;
+    height: 1px;
+    flex-shrink: 0;
+    width: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.aboutMe__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    padding: 66px 0 100px 0;
+    margin: 0;
+    gap: 270px;
+}
+
+.aboutMe__info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.aboutMe__title {
+    color: #FFF;
+    font-style: normal;
+    font-size: 50px;
+    font-weight: 400;
+    line-height: 58px;
+    letter-spacing: -2px;
+    width: 100%;
+    margin: 0px auto 18px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.aboutMe__subtitle {
+    color: #FFF;
+    font-style: normal;
+    font-size: 18px;
+    line-height: 20px;
+    width: 100%;
+    margin: 0 0 26px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.aboutMe__text {
+    color: #FFF;
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    width: 100%;
+    margin: 0 auto 99px 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.aboutMe__link {
+    color: #FFF;
+    font-style: normal;
+    font-size: 14px;
+    line-height: normal;
+    width: 100%;
+    margin: 0 auto 0 0;
+    display: flex;
+    justify-content: flex-start;
+    text-decoration: none;
+}
+.aboutMe__link:hover {
+    opacity: 0.7;
+}
+
+.aboutMe__photo {
+    width: 270px;
+    height: 327px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    object-fit: cover;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (max-width:1050px) {
+    .aboutMe__container {
+        gap: 50px;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .aboutMe {
+        padding: 90px 0;
+        width: calc(100% - 50px * 2);
+    }
+
+    .aboutMe__container {
+        padding: 66px 0 91px 0;
+        gap: 49px;
+    }
+
+    .aboutMe__title {
+        font-size: 40px;
+        line-height: 40px;
+        letter-spacing: -1.6px;
+        margin: 0 auto 16px 0;
+        padding: 0;
+    }
+
+    .aboutMe__subtitle {
+        font-size: 12px;
+        line-height: 18px;
+        margin: 0 auto 20px 0;
+    }
+
+    .aboutMe__text {
+        font-size: 12px;
+        line-height: 18px;
+        max-width: 364px;
+        margin: 0 auto 87px 0;
+    }
+
+    .aboutMe__photo {
+        width: 255px;
+        height: 307px;
+    }
+}
+
+@media screen and (max-width:550px) {
+    .aboutMe {
+        padding: 72px 14px 70px 14px;
+        width: calc(100% - 14px * 2);
+    }
+
+    .aboutMe_header {
+        font-size: 18px;
+        letter-spacing: -0.72px;
+        margin: 0 auto 28px 0;
+
+    }
+
+    .aboutMe__container {
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+        padding: 60px 0 70px 0;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+    }
+
+    .aboutMe__photo {
+        margin-bottom: 0;
+        width: 100%;
+        max-width: 292px;
+        height: 352px;
+    }
+
+    .aboutMe__info {
+        max-width: 292px;
+        max-width: 100%;
+    }
+
+    .aboutMe__title {
+        font-size: 30px;
+        line-height: normal;
+        letter-spacing: -1.2px;
+        margin: 0px auto 20px 0;
+    }
+
+    .aboutMe__subtitle {
+        font-size: 11px;
+        line-height: 16px;
+        margin: 0 auto 20px 0;
+    }
+
+    .aboutMe__text {
+        font-size: 11px;
+        line-height: 16px;
+        font-weight: 400;
+        margin: 0 auto 40px auto;
+    }
+}
