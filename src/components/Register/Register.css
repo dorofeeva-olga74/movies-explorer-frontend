@@ -3,8 +3,10 @@
     margin: 70px auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     max-width: 396px;
+    min-width: 396px;
+    height: 100vh;
 }
 
 .register__title {
@@ -43,10 +45,10 @@
     background: #2F2F2F;
     border: none;
     padding: 15px;
-    margin: 10px 0 20px 0;
+    margin: 9px 0 20px 0;
 }
 
-.selected {
+.register__input-red {
     color: #EE3465;
 }
 
@@ -58,12 +60,12 @@
     font-family: 'Inter', 'Arial', sans-serif;
     font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     line-height: normal;
     width: 100%;
     min-height: 45px;
-    padding: 13px 0 15px 0;
-    margin: 69px auto 16px auto;
+    padding: 14px 2px 15px 0px;
+    margin: 71px auto 17px auto; 
     border: none;
     cursor: pointer;    
 }
@@ -95,7 +97,8 @@
 @media screen and (max-width:768px) {
     .register {
         margin: 232px auto;
-    }
+        padding: 0;
+    }    
 }
 
 @media screen and (max-width:550px) {
@@ -103,6 +106,7 @@
         margin: 56px 0 30px 0;
         align-items: center;
         max-width: 260px;
+        min-width: 260px;        
     }
 
     .register__title {
@@ -115,7 +119,8 @@
 
     .register__submit {
         font-size: 12px;
-        margin: 157px auto 14px auto;
+        margin: 159px auto 14px auto;
+        padding: 17px 2px 15px 0px;
     }
 
     .register__caption {

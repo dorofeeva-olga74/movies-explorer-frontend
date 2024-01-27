@@ -1,7 +1,7 @@
 .menu {
     display: flex;
     flex-direction: row;
-    padding-left: 64px;
+    padding-left: 62px;
 }
 
 .menu__movies {
@@ -25,7 +25,7 @@
 
 .menu__movies_saved {
     width: 100%;
-    margin: auto 0 auto 16px;
+    margin: auto 0 auto 17px;
 }
 
 @media screen and (max-width:768px) {

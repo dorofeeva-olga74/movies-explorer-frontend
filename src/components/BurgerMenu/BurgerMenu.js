@@ -15,8 +15,8 @@ function BurgenMenu() {
     }
     return (
         <>
-            <button className='burgenMenu' onClick={handleContextBurgerMenuClick}>
-                <img className='burgenMenuImg' src={BurgenMenuImg} alt='Изображение БургерМеню' />
+            <button className='burgen-menu' onClick={handleContextBurgerMenuClick}>
+                <img className='burgen-img' src={BurgenMenuImg} alt='Изображение БургерМеню' />
             </button>
             <ContextBurgerMenu
                 isOpen={isOpen}

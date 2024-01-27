@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import Header from '../Header/Header';
 import Main from '../Main/Main.js';
@@ -18,18 +18,15 @@ import Footer from '../Footer/Footer.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);//зарегистрирован пользователь или нет  
-
-  //ВЫХОД
+  const navigate = useNavigate();
+  //выход пользователя со страницы
   const handleExitUser = () => {
-    // localStorage.removeItem('token');
-    setIsLoggedIn(true);
-    // setUserEmail('');
-    // navigate("/signin");
+    setIsLoggedIn(false);
+    navigate('/');
   }
 
   return (
-    <div className='App'>
-
+    <div className='app'>
       <Routes>
         <Route path='/' element={
           <>
@@ -64,7 +61,7 @@ function App() {
         <Route path='/profile' element={
           <>
             <Header isLoggedIn={isLoggedIn} handleExitUser={handleExitUser} />
-            <Profile />
+            <Profile handleExitUser={handleExitUser} />
           </>
         } />
         <Route path='/signup' element={<Register />} />

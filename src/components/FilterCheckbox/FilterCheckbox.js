@@ -8,9 +8,9 @@ function FilterCheckbox() {
     }
     return (
         <>
-            <section className='filterCheckbox'>
+            <section className='filter-check-box'>
                 <label className={`switch ${isToggled ? 'on' : 'off'}`} htmlFor='toggle'>
-                    <input type='checkbox' onChange={handleChange} id='toggle' />
+                    <input type='checkbox' onClick={handleChange} id='toggle' />
                     <span className='slider' />                    
                 </label>
             </section >

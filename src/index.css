@@ -1,7 +1,7 @@
 body {
-width: 100vw;
+  width: 100vw;
   overflow-x: hidden;
-
+  background-color: #202020;
 }
 
 @import url(./vendor/normalize.css);
@@ -44,8 +44,3 @@ width: 100vw;
 @import url(./components/NotFound/NotFound.css);
 /* Preloader */
 @import url(./components/Preloader/Preloader.css);
-
-
-
-
-

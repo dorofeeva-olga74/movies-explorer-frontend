@@ -10,7 +10,7 @@ function Portfolio() {
                         <a className='portfolio__link' href='https://github.com/dorofeeva-olga74/how-to-learn' target="_blank" rel="noreferrer">Статичный сайт</a>
                         <span className='portfolio__link portfolio__link_arrow'>↗</span>
                     </li>
-                    <li className='portfolio__list' >
+                    <li className='portfolio__list'>
                         <a className='portfolio__link' href='https://dorofeeva-olga74.github.io/russian-travel/' target="_blank" rel="noreferrer">Адаптивный сайт</a>
                         <span className='portfolio__link portfolio__link_arrow'>↗</span>
                     </li>

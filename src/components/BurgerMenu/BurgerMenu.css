@@ -1,13 +1,13 @@
-.burgenMenu {
+.burgen-menu {
     display: none;
 }
 
 
 @media screen and (max-width: 768px) {
-    .burgenMenu {
+    .burgen-menu {
         box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.08);
         flex-shrink: 0;
-        margin: auto 0;
+        margin: 15px 0;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -19,13 +19,13 @@
         background: transparent;
         padding: 0;
     }
-    .burgenMenu:hover{
+    .burgen-menu:hover{
         opacity: 0.8;
     }
 }
 
 @media screen and (max-width: 550px) {
-    .burgenMenu {
+    .burgen-menu {
         margin: auto 0;
         width: 40px;
         height: 43px;        

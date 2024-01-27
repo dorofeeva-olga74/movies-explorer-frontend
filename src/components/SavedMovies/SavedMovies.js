@@ -5,10 +5,10 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList.js';
 function SavedMovies() {
     return (
         <>
-            <section className='movies'>
+            <section className='saved-movies movies'>
                 <SearchForm />
                 <MoviesCardList />
-                <div className='savedMovies-gap'></div>
+                {/* <div className='saved-movies__gap'></div> */}
             </section >
         </>
     )

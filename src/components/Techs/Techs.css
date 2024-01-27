@@ -8,6 +8,7 @@
     align-items: stretch;
     width: calc(100% - 70px * 2);
     background: #272727;
+    max-width: 1140px;
 }
 
 .techs_header {
@@ -17,19 +18,11 @@
     font-weight: 400;
     line-height: normal;
     letter-spacing: -0.88px;
-    margin: 0 auto 23px 0;
-    padding: 0;
+    padding: 0 0 23px 0;
+    margin: 0 auto;
     display: flex;
-}
-
-.techs__line {
-    background-color: #DADADA;
-    height: 1px;
-    flex-shrink: 0;
+    border-bottom: 1px solid #DADADA;
     width: 100%;
-    border: none;
-    margin: 0;
-    padding: 0;
 }
 
 .techs__subtitle {
@@ -40,7 +33,7 @@
     line-height: 58px;
     letter-spacing: -2px;
     width: 100%;
-    margin: 90px auto 26px auto;
+    margin: 90px auto 27px auto;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -94,6 +87,7 @@
     .techs {
         padding: 90px 50px;
         width: calc(100% - 50px * 2);
+        max-width: 668px;
     }
 
     .techs__subtitle {
@@ -121,24 +115,21 @@
 
 @media screen and (max-width:550px) {
     .techs {
-        padding: 67px 18px;
+        padding: 66px 18px;
         width: calc(100% - 18px * 2);
         background: none;
+        max-width: 292px;
     }
 
     .techs_header {
         font-size: 18px;
-        letter-spacing: -0.72px;
-        margin: 0 auto 28px 0;
-    }
-
-    .techs__line {
-        background-color: #000;
-        border: none;
-    }
+        letter-spacing: -0.72px;        
+        padding: 1px 0 29px 0;
+        border-bottom: 1px solid #000;        
+    }    
 
     .techs__subtitle {
-        margin: 60px auto 24px auto;
+        margin: 58px auto 24px auto;
         font-style: normal;
         font-size: 30px;
         font-weight: 400;
@@ -153,7 +144,7 @@
     }
 
     .techs__lists {
-        margin: 50px auto 0 auto;
+        margin: 51px auto 0 auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
         width: fit-content;

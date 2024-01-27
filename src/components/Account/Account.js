@@ -4,11 +4,11 @@ import IconAccount from "../../images/iconAccount.svg"
 
 function Account() {
     return (
-        <button className='account'>
+        <div className='account'>
             <NavLink to='/profile' className='account__title'>Аккаунт
                 <img className="account__icon" src={IconAccount} alt='Логотип аккаунта' />
             </NavLink>
-        </button>
+        </div>
     )
 }
 

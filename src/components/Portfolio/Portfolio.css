@@ -8,6 +8,7 @@
     align-items: stretch;
     width: 100%;
     background: #202020;
+    max-width: 1140px;
 }
 
 .portfolio__header {
@@ -69,12 +70,16 @@
 }
 
 @media screen and (max-width:768px) {
+    .portfolio {
+        max-width: 668px;
+    }
     .portfolio__header {
         color: #A0A0A0;
     }
 
     .portfolio__list {
         border-bottom: 1px solid #E6E6E6;
+        margin: 19px 0 0 0;
     }
 
     .portfolio__link {
@@ -89,6 +94,9 @@
 }
 
 @media screen and (max-width:550px) {
+    .portfolio {
+        max-width: 292px;
+    }
     .portfolio__header {
         font-size: 14px;
         margin: 0 auto 40px 0;
@@ -111,5 +119,6 @@
 
     .portfolio__list {
         padding-bottom: 19px;
+        margin: 21px 0 0 0;
     }
 }

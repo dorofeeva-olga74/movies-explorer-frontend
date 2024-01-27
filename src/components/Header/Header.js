@@ -9,10 +9,10 @@ function Header({ isLoggedIn }) {
 
   return (
     <>     
-      <header className={`header ${location.pathname !== "/" ? 'headerDark' : ''}`}>     
+      <header className={`header ${location.pathname !== '/' ? 'header-dark' : ''}`}>     
         <Logo />
-        {isLoggedIn && <HeaderAuthMenu />}
-        {!isLoggedIn && <HeaderAuthorization />}
+        {!isLoggedIn && <HeaderAuthMenu />}
+        {isLoggedIn && <HeaderAuthorization />}
       </header>
     </>
   )

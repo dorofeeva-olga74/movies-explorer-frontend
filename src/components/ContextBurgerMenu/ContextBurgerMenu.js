@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import IconAccount from "../../images/iconAccount.svg";
 
 function ContextBurgerMenu({ isOpen, onClose }) {
+  const location = useLocation();
 
   //Обработчик Escape
   useEffect(() => {
@@ -20,21 +21,20 @@ function ContextBurgerMenu({ isOpen, onClose }) {
   }, [isOpen, onClose]);
 
   return (
-    <section className={`contextBurgerMenu ${isOpen ? 'contextBurgerMenu_opened' : ''}`}>
-      <div className='contextBurgerMenu__container'>
-        <button className='contextBurgerMenu__close-button' onClick={onClose}></button>
-        <nav className='contextBurgerMenu__nav'>
-          <NavLink to='/' className='contextBurgerMenu__link contextBurgerMenu__current'>Главная</NavLink>
-          <NavLink to='/movies' className='contextBurgerMenu__link contextBurgerMenu__current'>Фильмы</NavLink>
-          <NavLink to='/saved-movies' className='contextBurgerMenu__link contextBurgerMenu__current'>Сохранённые фильмы</NavLink>
+    <section className={`context-burger-menu ${isOpen ? 'context-burger-menu_opened' : ''}`}>
+      <div className='context-burger-menu__container'>
+        <button className='context-burger-menu__close-button' onClick={onClose}></button>
+        <nav className='context-burger-menu__nav'>
+          <NavLink to='/' className={`context-burger-menu__link ${location.pathname === '/' ? 'context-burger-menu__current' : ''}`}>Главная</NavLink>
+          <NavLink to='/movies' className={`context-burger-menu__link ${location.pathname === '/movies' ? 'context-burger-menu__current' : ''}`}>Фильмы</NavLink>
+          <NavLink to='/saved-movies' className={`context-burger-menu__link ${location.pathname === '/saved-movies' ? 'context-burger-menu__current' : ''}`}>Сохранённые фильмы</NavLink>
         </nav>
-
+        <div className='context-burger-menu__account-button account context-burger-menu__account'>
+          <NavLink to='/profile' className='account__title context-burger-menu__account'>Аккаунт
+            <img className='account__icon context-burger-menu__icon context-burger-menu__account' src={IconAccount} alt='Логотип аккаунта' />
+          </NavLink>
+        </div>
       </div>
-      <button className='contextBurgerMenu__account-button account contextBurgerMenu__account'>
-        <NavLink to='/profile' className='account__title contextBurgerMenu__account'>Аккаунт
-          <img className='account__icon contextBurgerMenu__icon contextBurgerMenu__account' src={IconAccount} alt='Логотип аккаунта' />
-        </NavLink>
-      </button>
     </section>
   );
 }
