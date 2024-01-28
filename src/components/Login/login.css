@@ -1,0 +1,8 @@
+.login__submit {
+    margin: 158px auto 16px auto;
+}
+@media screen and (max-width:550px) {
+    .login__submit {
+        margin: 246px auto 14px auto;
+    }
+}

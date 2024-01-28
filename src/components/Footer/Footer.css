@@ -1,0 +1,125 @@
+.footer {
+    background: #202020;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.footer__title {
+    display: flex;
+    color: #8B8B8B;
+    text-align: center;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 0 0 20px 0;
+    margin: 79px auto 0 auto;
+    border-bottom: 1px solid #424242;
+    ;
+    width: calc(100% - 70px*2);
+    justify-content: center;
+}
+
+.footer__links {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 20px;
+    padding-right: 70px;
+}
+
+.footer__container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin: 0;
+    padding: 0;
+}
+
+.footer__data {
+    width: 100%;
+    display: flex;
+    margin: 20px auto 20px 70px;
+    color: #FFF;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.footer__link {
+    width: 100%;
+    display: flex;
+    color: #FFF;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.footer__link:hover {
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 768px) {    
+    .footer__title {        
+        width: calc(100% - 2 * 30px);
+    }
+
+    .footer__links {
+        padding-right: 31px;
+    }
+
+    .footer__data {
+        margin: 21px auto 20px 30px;        
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .footer__data {
+        justify-content: center;
+        margin: 30px auto 20px auto;
+        color: #8B8B8B;
+        font-size: 12px;
+    }
+
+    .footer__container {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .footer__title {
+        font-size: 12px;
+        padding: 0 0 21px 0;
+        margin: 78px auto 0 auto;
+        width: calc(100% - 2 * 10px);
+    }    
+
+    .footer__links {
+        flex-direction: column;
+        justify-content: center;
+        gap: 13px;
+        padding: 0;
+        margin: 31px auto 0 auto;
+    }
+
+    .footer__link {
+        flex-direction: column;
+        align-items: center;
+        font-size: 12px;
+    }
+}

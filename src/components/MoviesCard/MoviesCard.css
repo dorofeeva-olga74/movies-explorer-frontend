@@ -1,0 +1,140 @@
+.card {
+    max-width: 270px;
+    min-height: 218px;
+    background: #222;
+    box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.card__img {
+    width: 100%;
+    height: 151px;
+}
+
+.card__title-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card__title {
+    color: #FFF;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 15px 0 10px 12px;
+    padding: 0;
+}
+
+.card__save {
+    display: flex;
+    background: url('../../images/saveBlack.svg');
+    width: 16px;
+    height: 100%;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    margin: 11px 7px 3px 15px;
+    padding: 11px 12px 14px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.card__save:hover {
+    opacity: 0.8;
+}
+
+.card__save_active {
+    background: url('../../images/saveGreen.svg');
+}
+
+.card__delete {
+    display: flex;
+    background: url('../../images/delete.svg');
+    /* width: 16px;
+    height: 100%; */
+    width: 12px;
+    height: 15px;
+    flex-shrink: 0;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    margin: 14px 12px 10px 0;
+    padding: 3px 0 0 0;
+    border: none;
+    cursor: pointer;
+}
+
+
+.card__time-long {
+    color: #8B8B8B;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0 12px;
+    padding: 0;
+}
+
+@media screen and (max-width:1150px) {
+    .card {
+        max-width: 339px;
+        min-height: 257px;
+    }
+
+    .card__img {
+        height: 190px;
+    }
+}
+
+@media screen and (max-width:950px) {
+    .card {
+        max-width: 270px;
+        min-height: 218px;
+    }
+
+    .card__img {
+        height: 151px;
+    }
+}
+
+@media screen and (max-width:800px) {
+    .card {
+        max-width: 339px;
+        min-height: 257px;
+    }
+
+    .card__img {
+        height: 190px;
+    }
+}
+
+/* @media screen and (max-width:768px) {
+    .card {
+        max-width: 339px;
+        min-height: 257px;
+    }
+
+    .card__img {
+        height: 190px;
+    }
+
+    .card__save {
+        padding: 10px 12px;
+    }
+} */
+
+@media screen and (max-width:450px) {
+    .card {
+        max-width: 300px;
+        min-height: 235px;
+    }
+
+    .card__img {
+        height: 168px;
+    }
+}

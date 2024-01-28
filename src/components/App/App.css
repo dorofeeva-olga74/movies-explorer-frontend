@@ -1,0 +1,17 @@
+/* * {
+  outline: 1px solid red;
+} */
+
+.app {
+  min-height: 100%;
+  max-width: 1280px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background-color: #202020;
+  margin: 0 auto;
+  padding: 0;  
+  min-width: 320px;
+  width: 100vw;
+}
