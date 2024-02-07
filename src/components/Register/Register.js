@@ -6,10 +6,12 @@ function Register({ onSubmit }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
         onSubmit({ name, email, password });
     }, [name, email, password, onSubmit])
+    
     return (
         <main>
             <section className='register'>
@@ -24,7 +26,7 @@ function Register({ onSubmit }) {
                         type='name'
                         className='register__input'
                         placeholder={'Name'}
-                        value={name || ' '}
+                        value={name || ''}
                         onChange={(e) => setName(e.target.value)}
                         autoComplete={'on'}
                     >

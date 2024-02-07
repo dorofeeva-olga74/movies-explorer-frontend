@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: flex-start;
     width: calc(100% - 70px *2);
+    /* max-width: 1140px; */
     padding: 0 70px 50px 70px;
     margin: 0;
     background: #073042;
@@ -89,12 +90,12 @@
     background: transparent;
 }
 
-@media screen and (max-width:1050px) {
+/* @media screen and (max-width:1050px) {
     .promo {
         gap: 50px;
-    } }
+    } } */
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1050px) {
     .promo {
         display: flex;
         flex-direction: column;
