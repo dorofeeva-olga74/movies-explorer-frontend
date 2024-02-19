@@ -9,25 +9,38 @@ export class MainApi {
     }
     //приватный метод ответа сервера
     _getResponse(res) {
-         console.log(res)
+       console.log(res)
         if (res.ok) {
             return res.json();//дай мне ответ в формате json()
         }
-        return Promise.reject(new Error("Возникла ошибка"));
+        // return Promise.reject(new Error("Возникла ошибка"));
+        return Promise.reject(`Error: ${res.status}`);
     }
-    _request(url, options) {
-        return fetch(url, options).then(this._getResponse)
-      }
-
+    // _request(url, options) {
+    //     return fetch(url, options).then(this._getResponse);
+    //   }
+    // _request(url, options) {
+    //   console.log(options);
+    //   return fetch(url, {...options, authorization: `Bearer ${localStorage.getItem('token')}`, credentials: `same-origin`,}).then(this._getResponse)
+    // }
+    // _request(url, options) {
+    //   return fetch(url, {...options, 
+    //     authorization: `Bearer ${localStorage.getItem('token')}`}).then(this._getResponse)
+    //  }
+     _request(url, options) {
+      console.log(url)
+      return fetch(url, {...options, 'authorization': `Bearer ${localStorage.getItem('token')}`}).then(this._getResponse)
+     }
     //получить сохраненные фильмы//получение данных с сервера
-    getSavedMovies()  {//getAllToddos
+    getSavedMovies()  {
     return this._request(`${this._url}/movies`, { headers: this._headers })
     }
       //удалить карточку из сохраненных
      deleteMovie(movieId) {
       const options = {
         headers: this._headers,
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'same-origin',
     }
     return this._request(`${this._url}/movies/${movieId}`, options)
     }
@@ -49,13 +62,17 @@ export class MainApi {
             movieId: data.id,
             nameRU: data.nameRU || '',
             nameEN: data.nameEN || '',
-        })
+        }),
+        credentials: 'same-origin',
     }
       return this._request(`${this._url}/movies`, options)
     }
-     /*профиль*/
-    //получение данных пользователя с сервера
-
+    /*профиль*/
+  //получение данных пользователя с сервера
+  getProfileInfo() {
+    console.log(localStorage.getItem('token')) 
+    return this._request(`${this._url}/users/me`, { headers: this._headers, credentials: 'same-origin', })   
+  }
     //отправка данных на сервер   
     changeUserData(data) {
       const options = {
@@ -64,16 +81,19 @@ export class MainApi {
         body: JSON.stringify({
             name: data.name,
             email: data.email
-        })
+        }),
+        credentials: 'same-origin',
     }
       return this._request(`${this._url}/users/me`, options)
     }
+    
      // Регистрация пользователя:  
     register(data) {
       const options = {
         headers: this._headers,
         method: 'POST',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'same-origin',
       }
       return this._request(`${this._url}/signup`, options)
     }
@@ -83,162 +103,72 @@ export class MainApi {
         const options = {
           headers: this._headers,
           method: 'POST',
-          body: JSON.stringify(data)
+          body: JSON.stringify(data),
+          credentials: 'same-origin',
         }
         return this._request(`${this._url}/signin`, options)
     }
     //Для проверки валидности токена и получения email:
 
+    // получение данных пользователя с сервера
+    // checkToken(token) {
+    //   console.log(token)
+    //   return this._request(`${this._url}/users/me`, { headers: {'authorization': `Bearer ${token}`,
+    //   'Content-Type': 'application/json' }})
+    // }   
     //получение данных пользователя с сервера
     checkToken(token) {
-      console.log(`Bearer ${token}`)
-        return this._request(`${this._url}/users/me`, { 
-          headers: this._headers,
-      })
-    }   
-    
-//     getUserData() {
-//       const options = {
-//         headers: this._headers,
+     //console.log(`Bearer ${('token')}`)
+    console.log(`Bearer ${token}`) 
+    return this._request(`${this._url}/users/me`, { headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }})
+    }
+
+    // getUserData() {
+    //   const options = {
+    //     headers: this._headers,
+    //     method: 'GET',
+    //     credentials: 'same-origin',
+    // }
+    //   return this._request(`${this._url}/users/me`, options)
+    // } 
+//     async getUserData() {
+//     const res = await fetch(`${this._url}/users/me`, {
 //         method: 'GET',
-//     }
-//       return this._request(`${this._url}/users/me`, options)
-//     } 
-}
-    
+//         headers: this._headers,
+//     })
+//     return this._getResponse(res);
+// }
+
+//Для проверки валидности токена и получения email:
+// export const checkToken = async (token) => {
+//     //const token = localStorage.getItem("token");
+//     const res = await fetch(`${BASE_URL}/users/me`, {
+//         method: "GET",
+//         headers: {
+//             "Accept": "application/json",
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${token}`
+//         }
+//     });
+//     return getResponse(res);
+// } 
+  }   
 //создание экземпляра класса MainApi
 export const mainApi = new MainApi({
-//url: 'https://jupiter.movies.nomoredomainsmonster.ru' 
-url: "http://localhost:3001",
+//url: 'https://api.jupiter.movies.nomoredomainsmonster.ru'
+url: "http://localhost:3000",
 headers: {
-    authorization: `Bearer ${localStorage.getItem('token')}`,
-    'Content-Type': 'application/json',
- },
+  "Content-Type": "application/json",
+  "Accept": "application/json",
+  "authorization": `Bearer ${localStorage.getItem('token')}`,
+  //"authorization": "ae84b954-9fdb-4967-8466-ffa99a62c9a2",
+},
 });
 
-// //создание экземпляра класса MainApi
-//     const apiConfig = {
-//       //url: 'https://jupiter.movies.nomoredomainsmonster.ru' 
-//       url: "http://localhost:3001",
-//       headers: {
-//        authorization: `Bearer ${localStorage.getItem('token')}`,
-//        'Content-Type': 'application/json',
-//       },
-//     };
-//   /*API*/
-//   const mainApi = new MainApi(apiConfig);
-//   export default mainApi;
-
-/////////////////////////////////////////
-// async getUserData() {
-//     const res = await fetch(`${this._url}/users/me`, {
-//         method: 'GET',
-//         headers: this._headers,
-//     })
-//     return this._getResponse(res);
-// }
-
-// // Регистрация пользователя:   
-// async register(data) {
-//     const res = await fetch(`${this._url}/signup`, {
-//         method: 'POST',
-//         headers: this._headers,
-//         body: JSON.stringify(data),
-//     })
-//     return this._getResponse(res);
-// }
-// //Авторизация пользователя:
-// async authorize(data) {
-//     const res = await fetch(`${this._url}/signin`, {
-//         method: 'POST',
-//         headers: this._headers,
-//         body: JSON.stringify(data),
-//     })
-//     return this._getResponse(res);
-// }
-
-// //Для проверки валидности токена и получения email:
-// async checkToken(token) {
-//     const res = await fetch(`${this._url}/users/me`, {
-//         method: 'GET',
-//         headers: {
-//             "Authorization": `Bearer ${token}`,
-//             "Content-Type": "application/json"
-           
-//         }
-//     })
-//     return this._getResponse(res);
-// }
-
-// //отправка данных на сервер 
-// async changeUserData(data) {
-//     const res = await fetch(`${this._url}/users/me`, {
-//         method: 'PATCH',
-//         headers: this._headers,
-//         body: JSON.stringify({
-//             name: data.name,
-//             email: data.email
-//         })
-//     })
-//     return this._getResponse(res);
-// }
-// //получить сохраненные фильмы
-// async getSavedMovies() {
-//     const res = await fetch(`${this._url}/movies`, {
-//         method: 'GET',
-//         headers: this._headers,
-//     })
-//     return this._getResponse(res);
-// }
-// //отправить данные о сохраненных фильмах//сохранить фильмы
-// async savedMovie(data) {
-//         const res = await fetch(`${this._url}/movies`, {
-//             method: 'POST',
-//             headers: this._headers,
-//             body: JSON.stringify({
-//                 country: data.country || '',
-//                 director: data.director || '',
-//                 duration: data.duration || '',
-//                 year: data.year || '',
-//                 description: data.description || '',
-//                 image: `https://api.nomoreparties.co${data.image.url}` || '',
-//                 trailerLink: data.trailerLink || '',
-//                 thumbnail: `https://https://api.nomoreparties.co${data.image.formats.thumbnail.url}` || '',
-//                 movieId: data.id,
-//                 nameRU: data.nameRU || '',
-//                 nameEN: data.nameEN || '',
-//             })
-//         })
-//         return this._getResponse(res);
-//     }
-// //отправить данные о сохраненных фильмах//сохранить фильмы
-// // async savedMovie(data) {
-// //     const res = await fetch(`${this._url}/movies`, {
-// //         method: 'POST',
-// //         headers: this._headers,
-// //         body: JSON.stringify(data)
-// //     })
-// //     return this._getResponse(res);
-// // }
-// //удалить карточку из сохраненных
-// async deleteMovie(id) {
-//     const res = await fetch(`${this._url}/movies/${id}`, {
-//         method: 'DELETE',
-//         headers: this._headers,
-//     })
-//     return this._getResponse(res);
-// }
-// }
-
-// //создание экземпляра класса MainApi
-// export const mainApi = new MainApi({
-// //url: 'https://jupiter.movies.nomoredomainsmonster.ru' 
-// url: "http://localhost:3001",
-// headers: {
-//     authorization: `Bearer ${localStorage.getItem('token')}`,
-//     'Content-Type': 'application/json',
-//  },
-// });
 
 
 

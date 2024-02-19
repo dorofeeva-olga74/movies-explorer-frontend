@@ -1,4 +1,3 @@
-//import '../blocks/popup/_opened/popup_opened.css';
 import React from "react";
 import imgSuccess from "../../images/img__success.svg";
 import imgFail from "../../images/img__fail.svg";

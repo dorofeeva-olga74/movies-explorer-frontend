@@ -1,16 +1,14 @@
-import { useState } from 'react';
-
-function FilterCheckbox() {
-    const [isToggled, setIsToggled] = useState(false);
+function FilterCheckbox({value, onChange}) {
+  
     const handleChange = (e) => {
-        setIsToggled(e.target.checked);        
+        onChange(!value);      
         console.log('переключен');
     }
     return (
         <>
             <section className='filter-check-box'>
-                <label className={`switch ${isToggled ? 'on' : 'off'}`} htmlFor='toggle'>
-                    <input type='checkbox' onClick={handleChange} id='toggle' />
+                <label className={`switch ${value ? 'on' : 'off'}`}>
+                    <input type='checkbox' onClick={handleChange}id='toggle' name='isShort' />                         
                     <span className='slider' />                    
                 </label>
             </section >

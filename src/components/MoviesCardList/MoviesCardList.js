@@ -1,12 +1,10 @@
 import React from 'react';
-// import { memo } from 'react';
-// import { useLocation } from 'react-router-dom';
-// import { moviesApi } from '../../utils/MoviesApi';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ onMovieLike, onMovieDelete, onClick, isSaved, onSavedMovies, allFilteredMovies, value, savedMovies, setSavedMovies }) {
+function MoviesCardList({ onMovieLike, onMovieDelete, onClick, isSaved, onSavedMovies, 
+    allFilteredMovies, value, savedMovies, setSavedMovies }) {
     // const location = useLocation();    
-    //console.log(allFilteredMovies);
+    console.log(allFilteredMovies);
 
     return (
         <>

@@ -45,14 +45,27 @@
     background: #2F2F2F;
     border: none;
     padding: 15px;
-    margin: 9px 0 20px 0;
+    margin: 9px 0 8px 0;
 }
 
 .register__input-red {
     color: #EE3465;
 }
+.register__error-server{
+    margin-top: 37px;   
+    color: #FF004C;
+    text-align: center;
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 13.31px;
+    /* margin-top: 200px; */
+    height: 14px;
+  
+}
 
-.register__submit {
+.register__submit:enabled {
     border-radius: 3px;
     background: #4285F4;
     color: #FFF;
@@ -65,13 +78,29 @@
     width: 100%;
     min-height: 45px;
     padding: 14px 2px 15px 0px;
-    margin: 71px auto 17px auto; 
+    margin: 20px auto 17px auto; 
     border: none;
     cursor: pointer;    
 }
 .register__submit:hover{
     opacity: 0.8;
 }
+.register__submit:disabled { 
+    width: 100%;
+    border-radius: 3px;
+    min-height: 45px;
+    background-color: #F8F8F8;    
+    color: #C2C2C2; 
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16.94px;    
+    cursor: default;
+    border: none;
+    pointer-events: none;
+    padding: 14px 2px 15px 0px;
+    margin: 20px auto 17px auto;    
+  }
 
 .register__caption {
     color: #8B8B8B;
@@ -116,10 +145,14 @@
     .register__form {
         width: 100%;
     }
+    .register__error-server{
+        margin-top: 137px;       
+        /* margin-top: 200px; */      
+    }
 
     .register__submit {
         font-size: 12px;
-        margin: 159px auto 14px auto;
+        margin: 20px auto 14px auto;
         padding: 17px 2px 15px 0px;
     }
 

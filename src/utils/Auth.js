@@ -1,4 +1,4 @@
-//const BASE_URL = 'jupiter.movies.nomoredomainsmonster.ru' 
+// const BASE_URL = 'jupiter.movies.nomoredomainsmonster.ru' 
 // const BASE_URL =  'localhost:3000';
 
 // //приватный метод ответа сервера
@@ -25,17 +25,18 @@
 //     return getResponse(res);
 // };
 // //Авторизация пользователя:
-// export const authorize = async (data) => {
-//     const res = await fetch(`${BASE_URL}signin`, {
+// export const authorize = async ({ password, email }) => {
+//     const res = await fetch(`${BASE_URL}/signin`, {
 //         method: 'POST',
 //         headers: {
 //             'Accept': 'application/json',
 //             'Content-Type': 'application/json'
 //         },
-//         body: JSON.stringify(data),
+//         body: JSON.stringify({ password, email }),
 //     });
 //     return getResponse(res);
 // };
+//Авторизация пользователя:
 // //Для проверки валидности токена и получения email:
 // export const checkToken = async (token) => {
 //     const res = await fetch(`${BASE_URL}users/me`, {
@@ -43,6 +44,19 @@
 //         headers: {
 //             'Accept': 'application/json',
 //             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${token}`
+//         }
+//     });
+//     return getResponse(res);
+// }
+// //Для проверки валидности токена и получения email:
+// export const checkToken = async (token) => {
+//     //const token = localStorage.getItem("token");
+//     const res = await fetch(`${BASE_URL}/users/me`, {
+//         method: "GET",
+//         headers: {
+//             "Accept": "application/json",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${token}`
 //         }
 //     });
