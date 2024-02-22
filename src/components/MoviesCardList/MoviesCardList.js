@@ -1,11 +1,13 @@
 import React from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ onMovieLike, onMovieDelete, onClick, isSaved, onSavedMovies, 
-    allFilteredMovies, value, savedMovies, setSavedMovies }) {
-    // const location = useLocation();    
-    console.log(allFilteredMovies);
+function MoviesCardList({ handleMovieLikeToggle, 
+    allFilteredMovies, value, savedMovies }) {
+    // const location = useLocation();
+    // console.log(allFilteredMovies);
 
+
+    
     return (
         <>
             <section className='movies__card-list'>
@@ -14,18 +16,9 @@ function MoviesCardList({ onMovieLike, onMovieDelete, onClick, isSaved, onSavedM
                         index={index + 1}
                         movie={movie}
                         key={movie.id}
-                        name={movie.nameRU}
-                        allFilteredMovies={allFilteredMovies}
-                        savedMovies={savedMovies}
-                        setSavedMovies={setSavedMovies}
-                        //onClick={(e, movie) => onClick(e, movie)}
-                        isSaved={isSaved}
-                        onMovieDelete={(movie)=>onMovieDelete(movie)}
-                        onMovieLike={(movie)=>onMovieLike(movie)}
-                        isLiked={ savedMovies.some((m) => m.movieId === movie.id)}                       
-                    //handleMovieLike={handleMovieLike}
-                    //onSavedMovies={onSavedMovies}
-                    //isSaved={isSaved}                        
+                        name={movie.nameRU}              
+                        savedMovies={savedMovies}                                      
+                        handleMovieLikeToggle={handleMovieLikeToggle}                                         
                     />
                 )) : []}
             </section>

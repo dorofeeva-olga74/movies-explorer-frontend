@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { moviesApi } from '../../utils/MoviesApi';
-import { mainApi } from '../../utils/MainApi.js';
+import { MainApi, mainApi } from '../../utils/MainApi.js';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import CurrentUserContext from '../../contecst/CurrentUserContext.js';
 import Header from '../Header/Header';
@@ -17,7 +17,7 @@ import AboutMe from '../AboutMe/AboutMe';
 import Footer from '../Footer/Footer.js';
 import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
-// import { register, authorize, checkToken } from '../../utils/Auth.js';
+import { register, authorize, checkToken } from '../../utils/Auth.js';
 
 function App() {  
   const [currentUser, setCurrentUser] = useState({
@@ -30,20 +30,22 @@ function App() {
   const [movies, setMovies] = useState([]); // изначальный массив фильмов
   const [filteredMoviesList, setFilteredMoviesList] = useState([]); // массив отфильтрованных фильмов
   const [value, setValue] = useState('');
-  const [savedMovies, setSavedMovies] = useState([]);// сохраненные фильмы 
+ 
   const [isShortFilm, setIsShortFilm] = useState(() => {  // короткие фильмы
+
   const savedIsShort = localStorage.getItem('isShort');
     return savedIsShort === 'true'
     // return savedIsShort ? JSON.parse(savedIsShort) : { query: '', isShort: false };
-  }); 
-  // const [savedMovies, setSavedMovies] = useState([]);//массив с сохраненнными фильмами
-  console.log(filteredMoviesList)
+  });   
+  // console.log(filteredMoviesList)
   const navigate = useNavigate();
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState(false);
   const [textErrorServer, setTextErrorServer] = useState(''); //текст ошибки над кнопкой сабмита
   // const [isValidServer, setIsValidServer] = useState(false); // состояние наличия ошибок от сервера
-  console.log(currentUser)
+  // console.log(currentUser);
+  //СОХРАНЕННЫЕ ФИЛЬМЫ
+  const [savedMovies, setSavedMovies] = useState([]);// массив с сохраненнными фильмами
 
   //ВЫХОД
   const handleExitUser = () => {
@@ -58,12 +60,12 @@ function App() {
   ///РЕГИСТРАЦИЯ ПОЛЬЗОВАТЕЛЯ - САБМИТ
   async function handleRegisterSubmit(data) {
     try {
-      const userDataAfterReg = await mainApi.register(data);
+      const userDataAfterReg = await register(data);
       setCurrentUser(userDataAfterReg)
       // setIsInfoTooltipStatus(true);     
       // setIsInfoTooltipOpened(true);
-      handleLoginSubmit({ email: data.email, password: data.password })// логиним сразу пользователя
-      setIsLoggedIn(true);      
+      await handleLoginSubmit({ email: data.email, password: data.password })// логиним сразу пользователя
+     // setIsLoggedIn(true);      
     } catch (err) {
       if (err === 'Error: 409') {
         setTextErrorServer('Пользователь с таким email уже существует.');              
@@ -78,7 +80,7 @@ function App() {
   //АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ - САБМИТ
   const handleLoginSubmit = async (data) => {
     try {
-      const response = await mainApi.authorize(data);
+      const response = await authorize(data);
       console.log(response.token) // здесь есть токен
       localStorage.setItem('token', response.token); // сохраняем токен в хранилище
       setIsLoggedIn(true);
@@ -101,40 +103,6 @@ function App() {
       // setIsInfoTooltipStatus(false);
     }
   }
-  //ПРОВЕРКА ТОКЕНА
-  // const handleAuth = (token) => {
-  //   console.log(token)
-  //   if (token) {
-  //     mainApi.checkToken(token)
-  //       .then((user) => {
-  //         setIsLoggedIn(true);
-  //         setCurrentUser(user)        
-  //         .catch((e) => {
-  //           console.error(e)
-  //         });
-  //       })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   handleAuth(localStorage.getItem('token'))
-  // }, [])
-  // ПРОВЕРКА ТОКЕНА
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    console.log(token);
-    if (token) {
-      mainApi.checkToken(token)
-        .then((user) => {          
-          setCurrentUser({
-            name: user.name,
-            email: user.email,
-          })
-          setIsLoggedIn(true);
-        })
-        .catch((err) => console.log(err))
-    } 
-  }, []);  
    
   //получение информации о пользователе с сервера
   const getCurrentUser = async () => {
@@ -146,60 +114,57 @@ function App() {
       console.log(err)
     }
   }
-  //хук получения данных пользователя при входе
-  useEffect(() => {
-    if (isLoggedIn) {
-      getCurrentUser();
-    }
-  }, [isLoggedIn])
 
   //изменение данных пользователя
-  const handleUpdateUser = async (name, email) => {
-    console.log(name, email); //сюда новые значения приходят    
-    // if (isLoading) return;
+  // const handleUpdateUser = async ({name, email}) => {
+  //   // console.log({name, email}); //сюда новые значения приходят    
+  //   // if (isLoading) return;
+  //   try {
+  //     setIsLoading(true);
+  //     setIsUpdatedUser(true);// состояние изменения данных пользователя
+  //     const updatedUserData = await mainApi.changeUserData({
+  //       name: name,
+  //       email: email,
+  //     })
+  //     setIsInfoTooltipOpened(true);
+  //     setIsInfoTooltipStatus(true);
+  //     // console.log(updatedUserData);
+  //     setCurrentUser(updatedUserData);
+  //   } catch (err) {
+  //     // setIsInfoTooltipOpened(true);
+  //     // setIsInfoTooltipStatus(false);
+  //     if (err === 'Error: 409') {
+  //       setTextErrorServer('Пользователь с таким email уже существует.');
+  //     } else {
+  //       setTextErrorServer('При обновлении профиля произошла ошибка.');
+  //     }
+  //     console.err(err?.reason || err?.message);
+  //   } finally {
+  //     setIsLoading(false)
+  //     // setIsUpdatedUser(false);      
+  //   }
+  // }
+  const handleUpdateUser = async ({ name, email }) => {
+     // console.log(name, email); //сюда новые значения приходят  
+     setIsUpdatedUser(true);
     try {
-      setIsLoading(true);
-      setIsUpdatedUser(true)// состояние изменения данных пользователя
-      const updatedUserData = await mainApi.changeUserData({
-        name: name,
-        email: email,
-      })
+      const updatedUserData = await mainApi.changeUserData({ name, email });
+      //console.log(updatedUserData);
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
-      console.log(updatedUserData);
       setCurrentUser(updatedUserData);
-    } catch (err) {
-      // setIsInfoTooltipOpened(true);
-      // setIsInfoTooltipStatus(false);
-      if (err === 'Error: 409') {
+    } catch (err) {      
+      if (err === 'Error: 409') { // дописать проверку если емейл пользователя не равен тому же значению
         setTextErrorServer('Пользователь с таким email уже существует.');
       } else {
         setTextErrorServer('При обновлении профиля произошла ошибка.');
-      }
-      console.err(err?.reason || err?.message);
-    } finally {
-      setIsLoading(false)
-      // setIsUpdatedUser(false);      
-    }
+      } 
+      // console.log(err);
+      console.error(err?.reason || err?.message);
+      setIsInfoTooltipOpened(true);
+      setIsInfoTooltipStatus(false);
+    }    
   }
-
-  //ФИЛЬМЫ/////////////////////////////////
-  const getAllMovies = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      setMovies(await moviesApi.getMovies());
-    } catch (e) {
-      console.error(e?.reason || e?.message);
-    } finally {
-      setIsLoading(false)
-    }
-  }, [setIsLoading]);
-  // console.log(movies); // -  здесь все 100 фильмов!!! 
-
-  // сохранение состояния фильтра короткометражек
-  useEffect(() => {
-    localStorage.setItem('isShort', String(isShortFilm));
-  }, [isShortFilm]);
 
   const allFilteredMovies = useMemo(() => {
     if (!value) {
@@ -213,50 +178,43 @@ function App() {
       const nameEN = movie.nameEN.toLowerCase().includes(value.toLowerCase());
       return nameRU || nameEN;
     });
-    console.log(filtredMovies);
+    // console.log(filtredMovies);
     localStorage.setItem('value', value);
     localStorage.setItem('isShortFilm', String(isShortFilm));
     localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
     setFilteredMoviesList(filtredMovies);    
     return filtredMovies;
   }, [movies, isShortFilm, value]);
-
   // console.log(allFilteredMovies); // здесь отфильтрованные фильмы пока по имени
+  
+  //добавление фильма в сохраненные, управление кнопкой лайка
+  const handleMovieLikeToggle = async (movie) => { // приходит лайк есть фильм
+    const index = savedMovies.findIndex((m) => m.movieId === movie.id);
+    const comparisonById = savedMovies.find((obj) => obj.movieId === movie.id);
+    const _id = comparisonById ? comparisonById._id : null;
+    console.log(movie);
+    console.log(savedMovies)
+    console.log(`index ${index}`)
+    console.log(_id)
 
-  const handleMovieDelete = async (movie) => {    
-    setIsLoading(true);
-    try {
-      const movieToDelete = savedMovies.find((m) => m.movieId === movie.id)
-      console.log(movieToDelete.id)
-      await mainApi.deleteMovie(movieToDelete);
-      setMovies((state) => state.filter((m) => m.movieId === movie.id ? '' : m.movieId));
-      console.log("удалила")
-    } catch (e) {
-      console.error(e?.reason || e?.message)
-    }
-  }
-
-  const handleMovieLike = async (movie) => {
-    console.log(movie) // приходит лайк
-    //const isLiked = movie.id.some((m) => m.movieId === movie.id);
-    try {
-      // if (!movie.isLiked) {
-      const newMovie = await mainApi.savedMovie(movie);
-      console.log(newMovie)
-      setSavedMovies([...savedMovies, newMovie]);
-      //console.log(newMovie)            
-      // } else {
-      //     await handleMovieDelete(movie)
-      // }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  // загрузка всех фильмов
-  useEffect(() => {
-    getAllMovies();
-  }, [getAllMovies])
-
+    index === -1 ? 
+          mainApi
+            .savedMovie(movie)   
+            .then((res) => {
+              setSavedMovies((prev) => prev.concat(res));
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+        : mainApi
+            .deleteMovie(_id)
+            .then(() => {
+              setSavedMovies((prev) => prev.filter((obj) => obj.movieId !== movie.id));
+            })
+            .catch((err) => {
+            console.error(err);
+            });
+  }  
   // Закрытие попапов
   function closeAllPopups() {
     //setIsCardDeletePopupOpen(false);
@@ -264,6 +222,66 @@ function App() {
     setIsInfoTooltipStatus(false);
     setIsInfoTooltipOpened(false);
   }
+  
+  //ФИЛЬМЫ/////////////////////////////////
+  const getAllMovies = async () => {
+    setIsLoading(true);
+    try {
+      setMovies(await moviesApi.getMovies());
+    } catch (e) {
+      console.error(e?.reason || e?.message);
+    } finally {
+      setIsLoading(false)
+    }
+  };
+  // console.log(movies); // -  здесь все 100 фильмов!!! 
+      
+  const getAllLikedMovies = async () => {
+    setIsLoading(true);
+    try {
+      setSavedMovies(await mainApi.getSavedMovies());
+    } catch (e) {
+      console.error(e?.reason || e?.message);
+    } finally {
+      setIsLoading(false)
+    }
+  };
+
+  // загрузка всех фильмов
+  useEffect(() => {
+    getAllMovies();
+    getAllLikedMovies()
+  }, [])
+
+    // сохранение состояния фильтра короткометражек
+    useEffect(() => {
+      localStorage.setItem('isShort', String(isShortFilm));
+    }, [isShortFilm]);
+
+      //хук получения данных пользователя при входе
+  useEffect(() => {
+    if (isLoggedIn) {
+      getCurrentUser();
+    }
+  }, [isLoggedIn])
+  
+  // ПРОВЕРКА ТОКЕНА
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // console.log(token);
+    if (token) {
+      checkToken(token)
+        .then((user) => {          
+          setCurrentUser({
+            name: user.name,
+            email: user.email,
+          })
+          setIsLoggedIn(true);
+        })
+        .catch((err) => console.log(err))
+    } 
+  }, []);  
+
   return (
     <CurrentUserContext.Provider value={{ currentUser }}>
       <div className='app'>
@@ -299,9 +317,8 @@ function App() {
                   isShortFilm={isShortFilm}
                   setIsShortFilm={setIsShortFilm}
                   savedMovies={savedMovies}
-                  setSavedMovies={setSavedMovies}
-                  onMovieLike={(movie) => handleMovieLike(movie)}
-                  onMovieDelete={(movie) => handleMovieDelete(movie)}
+                  setSavedMovies={setSavedMovies}             
+                  handleMovieLikeToggle={handleMovieLikeToggle} 
                 />
                 <Footer />
               </>
@@ -312,9 +329,11 @@ function App() {
               <>
                 <Header isLoggedIn={isLoggedIn} handleExitUser={handleExitUser} />
                 <SavedMovies
+                allFilteredMovies={allFilteredMovies}
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                   isLoggedIn={isLoggedIn}
+                  handleMovieLikeToggle={handleMovieLikeToggle}
                 />
                 <Footer />
               </>
@@ -360,7 +379,7 @@ export default App;
   //   try {
   //     const newSavedMovie = await mainApi.savedMovie(data);
   //     //console.log(await mainApi.saveMovie())
-  //     //console.log(newMovie)
+  //     //console.log(newSavedMovies)
   //     setSavedMovies([newSavedMovie, ...savedMovies]);
   //     //setSavedMovies(newSavedMovie.data);     
   //     setIsLoading(false);

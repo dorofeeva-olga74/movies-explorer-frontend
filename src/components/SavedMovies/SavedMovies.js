@@ -5,10 +5,29 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList.js';
 import Preloader from '../Preloader/Preloader.js';
 import { mainApi } from "../../utils/MainApi";
 
-function SavedMovies({ isLoading, setIsLoading, isLoggedIn }) {
-    const [searchResults, setSearchResults] = useState([]);//массив найденных фильмов
-    const [savedMovies, setSavedMovies] = useState([]);//массив с сохраненнными фильмами
-    // const currentUser = useContext(CurrentUserContext);
+function SavedMovies({ savedMovies, isLoading, setIsLoading, isLoggedIn, handleMovieLikeToggle, allFilteredMovies }) {
+    // const [searchResults, setSearchResults] = useState([]);//массив найденных фильмов
+    // const [savedMovies, setSavedMovies] = useState([]);//массив с сохраненнными фильмами
+
+    // const allFilteredMovies = useMemo(() => {
+    //     if (!value) {
+    //       return [];
+    //     }
+    //     const filtredMovies = movies.filter((movie) => {
+    //       if (isShortFilm && movie.duration > 40) {
+    //         return false;
+    //       }
+    //       const nameRU = movie.nameRU.toLowerCase().includes(value.toLowerCase());
+    //       const nameEN = movie.nameEN.toLowerCase().includes(value.toLowerCase());
+    //       return nameRU || nameEN;
+    //     });
+    //     // console.log(filtredMovies);
+    //     localStorage.setItem('value', value);
+    //     localStorage.setItem('isShortFilm', String(isShortFilm));
+    //     localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
+    //     setFilteredMoviesList(filtredMovies);    
+    //     return filtredMovies;
+    //   }, [movies, isShortFilm, value]);
     //отправка данных о сохраненных фильмах на сервер//сохранение фильма
     // const handleSavedMovies = async (data) => {//сабмит
     //     setIsLoading(true)
@@ -46,32 +65,34 @@ function SavedMovies({ isLoading, setIsLoading, isLoggedIn }) {
     //     }
     // }
     //загрузка сохраненных фильмов на странице
-    useEffect(() => {
-        //const token = localStorage.getItem('token');
-        setIsLoading(true);
-        if (isLoggedIn) { //token вместо isLoggedIn
-            Promise.all([mainApi.getSavedMovies()])
-                .then(([savedMovies]) => {
-                    setSavedMovies(savedMovies);
-                    setSearchResults(savedMovies);
-                    localStorage.setItem('savedMovies', JSON.stringify(mainApi));
-                })
-                .catch((e) => {
-                    console.error(e?.reason || e?.message);
-                    localStorage.clear();
-                })
-                .finally(() => setIsLoading(false))
-        }
-    }, [isLoggedIn, setIsLoading]);
-    
+    // useEffect(() => {
+    //     //const token = localStorage.getItem('token');
+    //     setIsLoading(true);
+    //     if (isLoggedIn) { //token вместо isLoggedIn
+    //         Promise.all([mainApi.getSavedMovies()])
+    //             .then(([savedMovies]) => {
+    //                 setSavedMovies(savedMovies);
+    //                 setSearchResults(savedMovies);
+    //                 localStorage.setItem('savedMovies', JSON.stringify(mainApi));
+    //             })
+    //             .catch((e) => {
+    //                 console.error(e?.reason || e?.message);
+    //                 localStorage.clear();
+    //             })
+    //             .finally(() => setIsLoading(false))
+    //     }
+    // }, [isLoggedIn, setIsLoading]);
+
     return (
         <>
             <section className='saved-movies movies'>
-                <SearchForm />
+                <SearchForm
+                />
                 {isLoading ? <Preloader /> : (
                     <MoviesCardList
-                        // onSavedMovies={handleSavedMovies}
-                        movies={searchResults} />
+                        allFilteredMovies={allFilteredMovies}
+                        handleMovieLikeToggle={handleMovieLikeToggle}
+                    />
                     // {/* <div className='saved-movies__gap'></div> */}
                 )}
             </section >

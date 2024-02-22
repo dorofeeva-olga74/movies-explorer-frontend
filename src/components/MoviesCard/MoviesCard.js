@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function MoviesCard(props) {
-    const { movie, index, onMovieDelete, onMovieLike, savedMovies } = props;
+    const {handleMovieLikeToggle, movie, index, onClick, onMovieDelete, onMovieLike, savedMovies } = props;
     const [isSaved, setIsSaved] = useState(savedMovies.some((m) => m.movieId === movie.id));//состояние сохранения фильма
     //console.log(movie)   
     const location = useLocation(); 
@@ -13,33 +13,40 @@ function MoviesCard(props) {
         return `${hours}ч ${remainingMinutes}м`;
       }
       const duration = filmDuration(movie.duration);
-    const handleSavedClick = useCallback((e) => { 
-        e.preventDefault();         
+
+    const handleSavedClick = (e) => { 
+        e.stopPropagation();         
         //console.log(movie);
+        handleMovieLikeToggle(movie)
         if(!isSaved) {
-            onMovieLike(movie);
-            console.log('like')
+            // handleMovieLike(movie);
+            // onMovieLike(movie);
+            // console.log('like')
             setIsSaved(!isSaved);
         } else {
-            onMovieDelete(movie);
+            // onMovieDelete(movie);
             setIsSaved(false);
-            console.log('deslike')  
+            // console.log('deslike')  
         }
-    }, [movie, onMovieLike, onMovieDelete, isSaved])
+    }
 
-    const handleDelete = () => {
-        onMovieDelete(movie);
-        setIsSaved(isSaved);
+    // const handleDelete = () => {
+    //     onMovieDelete(movie);
+    //     setIsSaved(isSaved);
+    // }
+
+    const openTrailer = () => {
+        window.open(movie.trailerLink, '_blank');
     }
 
     return (
-        <article className='card'>
+        <article className='card' onClick={() =>openTrailer()}>
             <img className='card__img' src={`https://api.nomoreparties.co${movie.image.url}`} alt={`Постер фильма ${movie.nameRU}`} />
             <div className={'card__title-section'}>
                 <h3 className={'card__title'}>{movie.nameRU}</h3>
                 {location.pathname === '/movies' ?
                     <button
-                        onClick={handleSavedClick}
+                        onClick={(e) => handleSavedClick(e)}
                         id={'save'}
                         type={"button"}
                         aria-label={'Кнопка сохранения'}
@@ -48,7 +55,7 @@ function MoviesCard(props) {
                     </button> :
                     <button
                         index={index}
-                        onClick={handleDelete}
+                        onClick={(e) => handleSavedClick(e)}
                         id={'save'}
                         type={"button"}
                         aria-label={'Кнопка сохранения'}

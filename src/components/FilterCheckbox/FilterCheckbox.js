@@ -2,7 +2,6 @@ function FilterCheckbox({value, onChange}) {
   
     const handleChange = (e) => {
         onChange(!value);      
-        console.log('переключен');
     }
     return (
         <>

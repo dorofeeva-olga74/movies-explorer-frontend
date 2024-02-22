@@ -4,7 +4,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Find from '../../images/Find.svg';
 import { useState } from 'react';
 
-function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm, onSubmit }) {
+function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm }) {
     const [searchInput, setSearchInput] = useState(localStorage.getItem('searchInputValue') || '')
 
     const handleSearchSubmit = async (e) => {

@@ -9,7 +9,7 @@ export class MainApi {
     }
     //приватный метод ответа сервера
     _getResponse(res) {
-       console.log(res)
+      //  console.log(res)
         if (res.ok) {
             return res.json();//дай мне ответ в формате json()
         }
@@ -28,7 +28,7 @@ export class MainApi {
     //     authorization: `Bearer ${localStorage.getItem('token')}`}).then(this._getResponse)
     //  }
      _request(url, options) {
-      console.log(url)
+      // console.log(url)
       return fetch(url, {...options, 'authorization': `Bearer ${localStorage.getItem('token')}`}).then(this._getResponse)
      }
     //получить сохраненные фильмы//получение данных с сервера
@@ -40,38 +40,45 @@ export class MainApi {
       const options = {
         headers: this._headers,
         method: 'DELETE',
-        credentials: 'same-origin',
+        // credentials: 'same-origin',
     }
     return this._request(`${this._url}/movies/${movieId}`, options)
     }
-    
+    register(data) {
+      const options = {
+        headers: this._headers,
+        method: 'POST',
+        body: JSON.stringify(data),       
+      }
+      return this._request(`${this._url}/signup`, options)
+    }
      //отправить данные о сохраненных фильмах//сохранить фильмы
-    savedMovie(data) {
+     savedMovie(movie) {
       const options = {
         headers: this._headers,
         method: 'POST',
         body: JSON.stringify({
-            country: data.country || '',
-            director: data.director || '',
-            duration: data.duration || '',
-            year: data.year || '',
-            description: data.description || '',
-            image: `https://api.nomoreparties.co${data.image.url}` || '',
-            trailerLink: data.trailerLink || '',
-            thumbnail: `https://https://api.nomoreparties.co${data.image.formats.thumbnail.url}` || '',
-            movieId: data.id,
-            nameRU: data.nameRU || '',
-            nameEN: data.nameEN || '',
-        }),
-        credentials: 'same-origin',
+            country: movie.country || '',
+            director: movie.director || '',
+            duration: movie.duration || '',
+            year: movie.year || '',
+            description: movie.description || '',           
+            image: `https://api.nomoreparties.co${movie.image.url}` || '',           
+            trailerLink: movie.trailerLink || '',
+            thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` || '',
+            movieId: movie.id,
+            nameRU: movie.nameRU || '',
+            nameEN: movie.nameEN || '',
+        }),        
     }
       return this._request(`${this._url}/movies`, options)
     }
+ 
     /*профиль*/
   //получение данных пользователя с сервера
   getProfileInfo() {
-    console.log(localStorage.getItem('token')) 
-    return this._request(`${this._url}/users/me`, { headers: this._headers, credentials: 'same-origin', })   
+    // console.log(localStorage.getItem('token')) 
+    return this._request(`${this._url}/users/me`, { headers: this._headers, })   
   }
     //отправка данных на сервер   
     changeUserData(data) {
@@ -81,22 +88,20 @@ export class MainApi {
         body: JSON.stringify({
             name: data.name,
             email: data.email
-        }),
-        credentials: 'same-origin',
+        })       
     }
       return this._request(`${this._url}/users/me`, options)
     }
     
      // Регистрация пользователя:  
-    register(data) {
-      const options = {
-        headers: this._headers,
-        method: 'POST',
-        body: JSON.stringify(data),
-        credentials: 'same-origin',
-      }
-      return this._request(`${this._url}/signup`, options)
-    }
+    // register(data) {
+    //   const options = {
+    //     headers: this._headers,
+    //     method: 'POST',
+    //     body: JSON.stringify(data),       
+    //   }
+    //   return this._request(`${this._url}/signup`, options)
+    // }
 
     //Авторизация пользователя:
     authorize(data) {
@@ -119,7 +124,7 @@ export class MainApi {
     //получение данных пользователя с сервера
     checkToken(token) {
      //console.log(`Bearer ${('token')}`)
-    console.log(`Bearer ${token}`) 
+    // console.log(`Bearer ${token}`) 
     return this._request(`${this._url}/users/me`, { headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
