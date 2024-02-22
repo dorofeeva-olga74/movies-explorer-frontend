@@ -5,8 +5,6 @@ function MoviesCardList({ handleMovieLikeToggle,
     allFilteredMovies, value, savedMovies }) {
     // const location = useLocation();
     // console.log(allFilteredMovies);
-
-
     
     return (
         <>

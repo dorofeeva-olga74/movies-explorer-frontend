@@ -24,7 +24,7 @@ function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm
     return (
         <>
             <section className='search'>
-                <form className='search__form' onSubmit={handleSearchSubmit}>
+                <form className='search__form' onSubmit={(e) => handleSearchSubmit(e)}>
                     <div className='search__input-container'>
                         <input required id={'search-input'}
                             className='search__input'
@@ -40,7 +40,7 @@ function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm
                         </button>
                     </div>
                     <span className='search__filter-checkbox-conteiner'>
-                        <FilterCheckbox value={isShortFilm} onChange={setIsShortFilm} />
+                        <FilterCheckbox isShortFilm={isShortFilm} setIsShortFilm={setIsShortFilm} />
                         <p className='search__label'>Короткометражки</p>
                     </span>
                 </form>
