@@ -4,7 +4,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList.js';
 import Preloader from '../Preloader/Preloader.js';
 
 function Movies({ handleMovieLikeToggle, isLoading, setIsLoading, isShortFilm, setIsShortFilm, onSubmit, 
-    allFilteredMovies, value, setValue, savedMovies, setSavedMovies}) {
+    movies, searchInputValue, setSearchInputValue, savedMovies, setSavedMovies, getAllMovies, }) {
        // const [isSaved, setIsSaved] = useState(savedMovies.some((m) => m.movieId === movie.id));//состояние сохранения фильма - то есть ЛАЙК!!!
         // const handleSavedClick = useCallback((e) => { 
         //     e.preventDefault();         
@@ -32,23 +32,25 @@ function Movies({ handleMovieLikeToggle, isLoading, setIsLoading, isShortFilm, s
 
 
     return (
-        <main>
+        <main className='main'>
             <section className='movies'>
                 <SearchForm
-                    setValue={setValue}
-                    value={value}
+                    setSearchInputValue={setSearchInputValue}
+                    searchInputValue={searchInputValue}
                     setIsLoading={setIsLoading}
-                    onSubmit={onSubmit}
+                    // onSubmit={onSubmit}
                     isShortFilm={isShortFilm}
                     setIsShortFilm={setIsShortFilm}  
                 />
                 {isLoading ? <Preloader /> : (
                     <MoviesCardList
-                        allFilteredMovies={allFilteredMovies}
-                        value={value}
+                    isShortFilm={isShortFilm}
+                        movies={movies}
+                        searchInputValue={searchInputValue}
                         savedMovies={savedMovies}
                         setSavedMovies={setSavedMovies}                        
                         handleMovieLikeToggle={handleMovieLikeToggle}
+                        getAllMovies={getAllMovies}
                         // handleFavoritClick={addFavoritMovie}                  
                     />
                 )}

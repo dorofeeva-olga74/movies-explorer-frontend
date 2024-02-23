@@ -19,7 +19,7 @@ import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 import { register, authorize, checkToken } from '../../utils/Auth.js';
 
-function App() {  
+function App() {
   const [currentUser, setCurrentUser] = useState({
     name: '',
     email: '',
@@ -28,17 +28,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);//прелоадинг
   const [isUpdatedUser, setIsUpdatedUser] = useState(false);//состояние измениния данных пользователя
   const [movies, setMovies] = useState([]); // изначальный массив фильмов
-  const [filteredMoviesList, setFilteredMoviesList] = useState([]); // массив отфильтрованных фильмов
-  const [value, setValue] = useState('');
- 
-  const [isShortFilm, setIsShortFilm] = useState(() => {  // короткие фильмы
-
-  const savedIsShort = localStorage.getItem('isShort');
-    return savedIsShort === 'true'
-    // return savedIsShort ? JSON.parse(savedIsShort) : { query: '', isShort: false };
-  });   
+  const [searchInputValue, setSearchInputValue] = useState('');
+  const [isShortFilm, setIsShortFilm] = useState(() => {localStorage.getItem('isShort')});   
   // console.log(filteredMoviesList)
-  const navigate = useNavigate();
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState(false);
   const [textErrorServer, setTextErrorServer] = useState(''); //текст ошибки над кнопкой сабмита
@@ -46,6 +38,7 @@ function App() {
   // console.log(currentUser);
   //СОХРАНЕННЫЕ ФИЛЬМЫ
   const [savedMovies, setSavedMovies] = useState([]);// массив с сохраненнными фильмами
+  const navigate = useNavigate();
 
   //ВЫХОД
   const handleExitUser = () => {
@@ -61,6 +54,7 @@ function App() {
   async function handleRegisterSubmit(data) {
     try {
       const userDataAfterReg = await register(data);
+      console.log(userDataAfterReg)
       setCurrentUser(userDataAfterReg)
       // setIsInfoTooltipStatus(true);     
       // setIsInfoTooltipOpened(true);
@@ -81,7 +75,6 @@ function App() {
   const handleLoginSubmit = async (data) => {
     try {
       const response = await authorize(data);
-      console.log(response.token) // здесь есть токен
       localStorage.setItem('token', response.token); // сохраняем токен в хранилище
       setIsLoggedIn(true);
       navigate('/movies');
@@ -107,7 +100,7 @@ function App() {
   //получение информации о пользователе с сервера
   const getCurrentUser = async () => {
     try {
-      const currentUser = await mainApi.getProfileInfo();
+      const currentUser = await checkToken(localStorage.getItem('token'));
       setCurrentUser(currentUser);
       // setCurrentUser(await mainApi.getUserData());
     } catch (err) {
@@ -166,37 +159,51 @@ function App() {
     }    
   }
 
-  const allFilteredMovies = useMemo(() => {
-    if (!value) {
-      return [];
-    }
-    const filtredMovies = movies.filter((movie) => {
-      if (isShortFilm && movie.duration > 40) {
-        return false;
-      }
-      const nameRU = movie.nameRU.toLowerCase().includes(value.toLowerCase());
-      const nameEN = movie.nameEN.toLowerCase().includes(value.toLowerCase());
-      return nameRU || nameEN;
-    });
-    // console.log(filtredMovies);
-    localStorage.setItem('value', value);
-    localStorage.setItem('isShortFilm', String(isShortFilm));
-    localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
-    setFilteredMoviesList(filtredMovies);    
-    return filtredMovies;
-  }, [movies, isShortFilm, value]);
+  // const allFilteredMovies = useMemo(() => {
+  //   if (!value) {
+  //     return [];
+  //   }
+  //   const filtredMovies = movies.filter((movie) => {
+  //     if (isShortFilm && movie.duration > 40) {
+  //       return false;
+  //     }
+  //     const nameRU = movie.nameRU.toLowerCase().includes(value.toLowerCase());
+  //     const nameEN = movie.nameEN.toLowerCase().includes(value.toLowerCase());
+  //     return nameRU || nameEN;
+  //   });
+  //   // console.log(filtredMovies);
+  //   localStorage.setItem('value', value);
+  //   localStorage.setItem('isShortFilm', String(isShortFilm));
+  //   localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
+  //   setFilteredMoviesList(filtredMovies);    
+  //   return filtredMovies;
+  // }, [movies, isShortFilm, value]);
   // console.log(allFilteredMovies); // здесь отфильтрованные фильмы пока по имени
-  
+  const prepearingCard = (movie) => {
+    const newCard = JSON.parse(JSON.stringify(movie))
+    newCard.country = movie.country || ''
+    newCard.director = movie.director || ''
+    newCard.duration =movie.duration || ''
+    newCard.year =movie.year || ''
+    newCard.description= movie.description || '' 
+    newCard.image= `https://api.nomoreparties.co${movie.image.url}` || ''    
+    newCard.trailerLink= movie.trailerLink || ''
+    newCard.thumbnail=`https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` || ''
+    newCard.movieId=movie.id
+    newCard.nameRU= movie.nameRU || ''
+    newCard.nameEN= movie.nameEN || ''
+    delete newCard.id
+    delete newCard.created_at
+    delete newCard.updated_at
+            return newCard
+  }
+
+
   //добавление фильма в сохраненные, управление кнопкой лайка
   const handleMovieLikeToggle = async (movie) => { // приходит лайк есть фильм
-    const index = savedMovies.findIndex((m) => m.movieId === movie.id);
-    const comparisonById = savedMovies.find((obj) => obj.movieId === movie.id);
+    const index = savedMovies.findIndex((m) => m.movieId === movie.movieId);
+    const comparisonById = savedMovies.find((obj) => obj.movieId === movie.movieId);
     const _id = comparisonById ? comparisonById._id : null;
-    console.log(movie);
-    console.log(savedMovies)
-    console.log(`index ${index}`)
-    console.log(_id)
-
     index === -1 ? 
           mainApi
             .savedMovie(movie)   
@@ -209,7 +216,7 @@ function App() {
         : mainApi
             .deleteMovie(_id)
             .then(() => {
-              setSavedMovies((prev) => prev.filter((obj) => obj.movieId !== movie.id));
+              setSavedMovies((prev) => prev.filter((obj) => obj.movieId !== movie.movieId));
             })
             .catch((err) => {
             console.error(err);
@@ -227,19 +234,8 @@ function App() {
   const getAllMovies = async () => {
     setIsLoading(true);
     try {
-      setMovies(await moviesApi.getMovies());
-    } catch (e) {
-      console.error(e?.reason || e?.message);
-    } finally {
-      setIsLoading(false)
-    }
-  };
-  // console.log(movies); // -  здесь все 100 фильмов!!! 
-      
-  const getAllLikedMovies = async () => {
-    setIsLoading(true);
-    try {
-      setSavedMovies(await mainApi.getSavedMovies());
+      const arrayWithNewCards = await moviesApi.getMovies()
+      setMovies(arrayWithNewCards.map((movie) => prepearingCard(movie)));
     } catch (e) {
       console.error(e?.reason || e?.message);
     } finally {
@@ -247,10 +243,43 @@ function App() {
     }
   };
 
+
+  // console.log(movies); // -  здесь все 100 фильмов!!! 
+      
+  // const getAllLikedMovies = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const allSavedMovies = setSavedMovies(await mainApi.getSavedMovies());
+  //     localStorage.setItem("allSavedMovies", JSON.stringify(allSavedMovies));
+  //   } catch (e) {
+  //     console.error(e?.reason || e?.message);
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // };
+  const getAllLikedMovies = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const allSavedMovies = await mainApi.getSavedMovies();
+      setSavedMovies(allSavedMovies);
+      localStorage.setItem("allSavedMovies", JSON.stringify(allSavedMovies));
+    } catch (e) {
+      console.error(e?.reason || e?.message);
+    } finally {
+      setIsLoading(false)
+    }
+  }, [setIsLoading, setSavedMovies]);
+
+  // загрузка всех фильмов
+  // useEffect(() => {        
+  //   getAllLikedMovies();
+  //   localStorage.getItem("allSavedMovies", savedMovies);
+  // }, [getAllLikedMovies, savedMovies])
+
   // загрузка всех фильмов
   useEffect(() => {
     getAllMovies();
-    getAllLikedMovies()
+    getAllLikedMovies();
   }, [])
 
     // сохранение состояния фильтра короткометражек
@@ -271,7 +300,7 @@ function App() {
     // console.log(token);
     if (token) {
       checkToken(token)
-        .then((user) => {          
+        .then((user) => {
           setCurrentUser({
             name: user.name,
             email: user.email,
@@ -310,15 +339,16 @@ function App() {
                   isLoading={isLoading}
                   isLoggedIn={isLoggedIn}
                   setIsLoading={setIsLoading}
-                  allFilteredMovies={allFilteredMovies}
-                  onSubmit={allFilteredMovies}
-                  value={value}
-                  setValue={setValue}                  
+                  movies={movies}
+                  // onSubmit={allFilteredMovies}
+                  searchInputValue={searchInputValue}
+                  setSearchInputValue={setSearchInputValue}                  
                   isShortFilm={isShortFilm}
                   setIsShortFilm={setIsShortFilm}
                   savedMovies={savedMovies}
                   setSavedMovies={setSavedMovies}             
                   handleMovieLikeToggle={handleMovieLikeToggle} 
+                  getAllMovies={getAllMovies}
                 />
                 <Footer />
               </>
@@ -329,11 +359,19 @@ function App() {
               <>
                 <Header isLoggedIn={isLoggedIn} handleExitUser={handleExitUser} />
                 <SavedMovies
-                allFilteredMovies={allFilteredMovies}
+                  savedMovies={savedMovies}
+                  movies={savedMovies}
+                  searchInputValue={searchInputValue}
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                   isLoggedIn={isLoggedIn}
                   handleMovieLikeToggle={handleMovieLikeToggle}
+                  setSearchInputValue={setSearchInputValue} 
+                  isShortFilm={isShortFilm}
+                  setIsShortFilm={setIsShortFilm}
+                  setSavedMovies={setSavedMovies}
+                  getAllLikedMovies={getAllLikedMovies}
+                  // setFilteredMoviesList={setFilteredMoviesList}
                 />
                 <Footer />
               </>

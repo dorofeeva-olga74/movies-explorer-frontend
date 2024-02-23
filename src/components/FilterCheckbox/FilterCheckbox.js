@@ -7,7 +7,7 @@ function FilterCheckbox({isShortFilm, setIsShortFilm}) {
         <>
             <section className='filter-check-box'>
                 <label className={`switch ${isShortFilm ? 'on' : 'off'}`}>
-                    <input type='checkbox' onClick={handleChange}id='toggle' name='isShort' />                         
+                    <input type='checkbox' onClick={handleChange} id='toggle' name='isShort' />                         
                     <span className='slider' />                    
                 </label>
             </section >

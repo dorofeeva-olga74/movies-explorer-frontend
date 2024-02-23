@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-function MoviesCard(props) {
-    const {handleMovieLikeToggle, movie, index, onClick, onMovieDelete, onMovieLike, savedMovies } = props;
-    const [isSaved, setIsSaved] = useState(savedMovies.some((m) => m.movieId === movie.id));//состояние сохранения фильма
+function MoviesCard({handleMovieLikeToggle, movie, index, savedMovies } ) {
+    const [isSaved, setIsSaved] = useState(savedMovies.some((m) => m.movieId === movie.movieId));//состояние сохранения фильма
     //console.log(movie)   
     const location = useLocation(); 
     
@@ -18,22 +17,12 @@ function MoviesCard(props) {
         e.stopPropagation();         
         //console.log(movie);
         handleMovieLikeToggle(movie)
-        if(!isSaved) {
-            // handleMovieLike(movie);
-            // onMovieLike(movie);
-            // console.log('like')
+        if(!isSaved) {            
             setIsSaved(!isSaved);
-        } else {
-            // onMovieDelete(movie);
-            setIsSaved(false);
-            // console.log('deslike')  
+        } else {            
+            setIsSaved(false);            
         }
-    }
-
-    // const handleDelete = () => {
-    //     onMovieDelete(movie);
-    //     setIsSaved(isSaved);
-    // }
+    }   
 
     const openTrailer = () => {
         window.open(movie.trailerLink, '_blank');
@@ -41,7 +30,7 @@ function MoviesCard(props) {
 
     return (
         <article className='card' onClick={() =>openTrailer()}>
-            <img className='card__img' src={`https://api.nomoreparties.co${movie.image.url}`} alt={`Постер фильма ${movie.nameRU}`} />
+            <img className='card__img' src={movie.image} alt={`Постер фильма ${movie.nameRU}`} />
             <div className={'card__title-section'}>
                 <h3 className={'card__title'}>{movie.nameRU}</h3>
                 {location.pathname === '/movies' ?

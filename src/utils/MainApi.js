@@ -57,19 +57,7 @@ export class MainApi {
       const options = {
         headers: this._headers,
         method: 'POST',
-        body: JSON.stringify({
-            country: movie.country || '',
-            director: movie.director || '',
-            duration: movie.duration || '',
-            year: movie.year || '',
-            description: movie.description || '',           
-            image: `https://api.nomoreparties.co${movie.image.url}` || '',           
-            trailerLink: movie.trailerLink || '',
-            thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}` || '',
-            movieId: movie.id,
-            nameRU: movie.nameRU || '',
-            nameEN: movie.nameEN || '',
-        }),        
+        body: JSON.stringify(movie),        
     }
       return this._request(`${this._url}/movies`, options)
     }

@@ -4,14 +4,14 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Find from '../../images/Find.svg';
 import { useState } from 'react';
 
-function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm }) {
+function SearchForm({ setSearchInputValue, searchInputValue, setIsLoading, isShortFilm, setIsShortFilm, }) {
     const [searchInput, setSearchInput] = useState(localStorage.getItem('searchInputValue') || '')
 
     const handleSearchSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        localStorage.setItem('searchInputValue', value)
-        setValue(searchInput);
+        localStorage.setItem('searchInputValue', searchInputValue)
+        setSearchInputValue(searchInput);
         //onSubmit(searchInput);
         try {
             setIsLoading(false);
@@ -22,7 +22,6 @@ function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm
     }
 
     return (
-        <>
             <section className='search'>
                 <form className='search__form' onSubmit={(e) => handleSearchSubmit(e)}>
                     <div className='search__input-container'>
@@ -45,7 +44,6 @@ function SearchForm({ setValue, value, setIsLoading, isShortFilm, setIsShortFilm
                     </span>
                 </form>
             </section >
-        </>
     )
 }
 export default SearchForm
