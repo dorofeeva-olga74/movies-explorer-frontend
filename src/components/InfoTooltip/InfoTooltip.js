@@ -8,7 +8,7 @@ function InfoTooltip({ status, isOpen, onClose, text, onCloseOverlay }) {
   return (
     <div className={`popup popup_type_success-form ${isOpen ? 'popup_opened' : ''}`} onClick={onCloseOverlay}>
       <div className="popup__container">
-        <div className="popup__form" onClick={e => e.stopPropagation()}>{/*чтобы не закрывалось при клике на саму форму*/}
+        <div className="popup__form" onClick={e => e.stopPropagation()}>
           <img className="popup__auth-img" src={img} alt={text} />
           <p className="popup__info-text">{text}</p>
         </div>

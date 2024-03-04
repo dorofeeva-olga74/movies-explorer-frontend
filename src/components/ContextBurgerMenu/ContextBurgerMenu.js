@@ -1,27 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import IconAccount from "../../images/iconAccount.svg";
 
-function ContextBurgerMenu({ isOpen, onClose }) {
-  const location = useLocation();
-
-  //Обработчик Escape
-  useEffect(() => {
-    function closeByEscape(e) {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    }
-    if (isOpen) { // навешиваем только при открытии
-      document.addEventListener('keydown', closeByEscape);
-      return () => {
-        document.removeEventListener('keydown', closeByEscape);
-      }
-    }
-  }, [isOpen, onClose]);
+function ContextBurgerMenu({ isOpen, onClose, onCloseOverlay }) {
+  const location = useLocation();  
 
   return (
-    <section className={`context-burger-menu ${isOpen ? 'context-burger-menu_opened' : ''}`}>
+    <section className={`context-burger-menu ${isOpen ? 'context-burger-menu_opened' : ''}`} onClick={onCloseOverlay}>
       <div className='context-burger-menu__container'>
         <button className='context-burger-menu__close-button' onClick={onClose}></button>
         <nav className='context-burger-menu__nav'>

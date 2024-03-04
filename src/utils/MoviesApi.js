@@ -1,33 +1,36 @@
 export class MoviesApi {
-    constructor({ url }) {//на входе некий обьект с url 
-        this._url = url;
+  constructor({ url }) {
+    this._url = url;
+  }
+  // Приватный метод ответа сервера
+  _getResponse(res) {
+    //console.log(response)
+    if (res.ok) {
+      return res.json();
     }
-    //приватный метод ответа сервера
-    _getResponse(res) {
-        //console.log(response)
-        if (res.ok) {
-            return res.json();//дай мне ответ в формате json()
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-    }
-    
-    async getMovies(title) {
-        if (!this.savedMoives) {
-            const res = await fetch(`${this._url}`, {
-                method: 'GET',
-            })           
-            this.savedMoives = await this._getResponse(res);
-        }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
 
-        return this.savedMoives;
+  async getMovies() {
+    if (!this.savedMoives) {
+      const res = await fetch(`${this._url}`, {
+        method: 'GET',
+      });
+      this.savedMoives = await this._getResponse(res);
     }
 
-    resetSave() {
-        this.savedMoives = null;
-    }
+    return this.savedMoives;
+  }
+
+  resetSave() {
+    delete this.savedMoives; // удалить свойство из объекта
+  }
+  // resetSave() {
+  //   this.savedMoives = null;
+  // }
 }
 
-//создание экземпляра класса MoviesApi
+// Создание экземпляра класса MoviesApi
 export const moviesApi = new MoviesApi({
-    url: 'https://api.nomoreparties.co/beatfilm-movies'
+  url: 'https://api.nomoreparties.co/beatfilm-movies',
 });

@@ -80,6 +80,8 @@
     margin: 0 auto 99px 0;
     display: flex;
     justify-content: flex-start;
+    text-align: justify;
+    text-indent: 20px;
 }
 
 .about-me__link {
