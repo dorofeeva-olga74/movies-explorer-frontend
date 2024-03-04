@@ -14,6 +14,8 @@ function SavedMovies({
   movies,
   savedMovies,
   serverError,
+  isShortSavedFilm,
+  setIsShortSavedFilm,
 }) {
   return (
     <>
@@ -24,6 +26,8 @@ function SavedMovies({
           setIsLoading={setIsLoading}
           isShortFilm={isShortFilm}
           setIsShortFilm={setIsShortFilm}
+          isShortSavedFilm={isShortSavedFilm}
+          setIsShortSavedFilm={setIsShortSavedFilm}
         />
         {isLoading ? (
           <Preloader />
@@ -35,6 +39,7 @@ function SavedMovies({
             searchInputValue={searchInputValue}
             isShortFilm={isShortFilm}
             savedMovies={savedMovies}
+            isShortSavedFilm={isShortSavedFilm}
           />
         )}
       </section>

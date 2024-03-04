@@ -107,3 +107,19 @@ export const changeUserData = async (data, token) => {
     console.log(error);
   }
 };
+export const getSavedMovies = async () => {
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  };
+  try {
+    const res = await fetch(`http://localhost:3000/movies`, options);
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

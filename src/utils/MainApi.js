@@ -25,16 +25,16 @@ export class MainApi {
     }
   }
   // получение сохраненных фильмов
-  async getSavedMovies() {
-    try {
-      const res = await this._request(`${this._url}/movies`, {
-        headers: this._headers,
-      });
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // async getSavedMovies() {
+  //   try {
+  //     const res = await this._request(`${this._url}/movies`, {
+  //       headers: this._headers,
+  //     });
+  //     return res;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   // удаление карточки из сохраненных
   async deleteMovie(movieId) {
     const options = {

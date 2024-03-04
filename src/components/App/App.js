@@ -17,7 +17,7 @@ import AboutMe from '../AboutMe/AboutMe';
 import Footer from '../Footer/Footer.js';
 import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
-import { register, authorize, checkToken, getProfileInfo, changeUserData } from '../../utils/Auth.js';
+import { register, authorize, checkToken, getProfileInfo, changeUserData, getSavedMovies } from '../../utils/Auth.js';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -34,6 +34,7 @@ function App() {
     // короткие фильмы состояние
     return localStorage.getItem('isShortFilm') || false;
   });
+  const [isShortSavedFilm, setIsShortSavedFilm] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]); // массив с сохраненнными фильмами
   const [searchInputValue, setSearchInputValue] = useState(''); // значение поисковой строки
 
@@ -182,6 +183,39 @@ function App() {
     return newCard;
   };
 
+  // const getHundredMovies = async () => {
+  //   const options = {
+  //     method: 'GET',
+  //     headers: {
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   };
+  //   try {
+  //     const res = await fetch(`https://api.nomoreparties.co/beatfilm-movies`, options);
+  //     return res.json();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const getMoviesWhatBeenSaved = async () => {
+  //   const options = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Accept: 'application/json',
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //     },
+  //   };
+  //   try {
+  //     const res = await fetch(`http://localhost:3000/movies`, options);
+  //     return res.json();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   // ПОЛУЧЕНИЕ ВСЕХ ФИЛЬМОВ
   const getAllMovies = async () => {
     setIsLoading(true);
@@ -207,7 +241,7 @@ function App() {
   const getAllLikedMovies = async () => {
     setIsLoading(true);
     try {
-      const allSavedMovies = await mainApi.getSavedMovies();
+      const allSavedMovies = await getSavedMovies();
       if (allSavedMovies && allSavedMovies.length > 0) {
         setSavedMovies(allSavedMovies);
       } else {
@@ -421,6 +455,8 @@ function App() {
                     handleExitUser={handleExitUser}
                   />
                   <SavedMovies
+                    isShortSavedFilm={isShortSavedFilm}
+                    setIsShortSavedFilm={setIsShortSavedFilm}
                     serverError={serverError}
                     setSearchInputValue={setSearchInputValue}
                     searchInputValue={searchInputValue}

@@ -15,7 +15,15 @@ const getMoviesCountOnPage = (screenWidth) => {
   }
 };
 
-function MoviesCardList({ handleMovieLikeToggle, movies, searchInputValue, isShortFilm, savedMovies, serverError }) {
+function MoviesCardList({
+  handleMovieLikeToggle,
+  movies,
+  searchInputValue,
+  isShortFilm,
+  savedMovies,
+  serverError,
+  isShortSavedFilm,
+}) {
   const location = useLocation();
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); // ширина экрана
@@ -28,7 +36,8 @@ function MoviesCardList({ handleMovieLikeToggle, movies, searchInputValue, isSho
 
     // фильтрация для короткометражек
     const filtredMovies = movies.filter((movie) => {
-      if (isShortFilm && movie.duration > 40) {
+      const currentIsShort = location.pathname === '/movies' ? isShortFilm : isShortSavedFilm;
+      if (currentIsShort && movie.duration > 40) {
         return false;
       }
       setMoviesCountOnPage(getMoviesCountOnPage(screenWidth));
@@ -39,7 +48,7 @@ function MoviesCardList({ handleMovieLikeToggle, movies, searchInputValue, isSho
     });
     localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
     return filtredMovies;
-  }, [searchInputValue, location.pathname, movies, isShortFilm, screenWidth]);
+  }, [searchInputValue, location.pathname, movies, isShortFilm, screenWidth, isShortSavedFilm]);
 
   let visibleMovies;
   location.pathname === '/movies'

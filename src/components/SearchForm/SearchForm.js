@@ -3,7 +3,15 @@ import Find from '../../images/Find.svg';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-function SearchForm({ setSearchInputValue, searchInputValue, setIsLoading, isShortFilm, setIsShortFilm }) {
+function SearchForm({
+  setSearchInputValue,
+  searchInputValue,
+  setIsLoading,
+  isShortFilm,
+  setIsShortFilm,
+  isShortSavedFilm,
+  setIsShortSavedFilm,
+}) {
   const location = useLocation();
 
   const [error, setError] = useState('');
@@ -87,6 +95,8 @@ function SearchForm({ setSearchInputValue, searchInputValue, setIsLoading, isSho
           <FilterCheckbox
             isShortFilm={isShortFilm}
             setIsShortFilm={setIsShortFilm}
+            isShortSavedFilm={isShortSavedFilm}
+            setIsShortSavedFilm={setIsShortSavedFilm}
           />
           <p className='search__label'>Короткометражки</p>
         </span>

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function MoviesCard({ handleMovieLikeToggle, movie, index, savedMovies }) {
-   // проверяем, существует ли savedMovies
-   if (!savedMovies) {
+  // проверяем, существует ли savedMovies
+  if (!savedMovies) {
     // если нет, то возвращаем null или заглушку
     return null;
   }
-  const isSavedOutside = savedMovies.some((m) => m.movieId === movie.movieId);
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [isSaved, setIsSaved] = useState(isSavedOutside); //состояние сохранения фильма
+  const [isSaved, setIsSaved] = useState(savedMovies.some((m) => m.movieId === movie.movieId)); //состояние сохранения фильма
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const location = useLocation();
 
