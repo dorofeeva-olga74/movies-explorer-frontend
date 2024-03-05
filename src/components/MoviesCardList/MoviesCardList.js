@@ -23,17 +23,17 @@ function MoviesCardList({
   savedMovies,
   serverError,
   isShortSavedFilm,
+  setSavedMovies,
 }) {
   const location = useLocation();
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); // ширина экрана
   const [moviesCountOnPage, setMoviesCountOnPage] = useState(getMoviesCountOnPage(screenWidth)); // количество фильмов на странице при загрузке
-
+ 
   const allFilteredMovies = useMemo(() => {
     if (!searchInputValue && location.pathname === '/movies') {
       return [];
     }
-
     // фильтрация для короткометражек
     const filtredMovies = movies.filter((movie) => {
       const currentIsShort = location.pathname === '/movies' ? isShortFilm : isShortSavedFilm;
@@ -46,7 +46,9 @@ function MoviesCardList({
       const nameEN = movie.nameEN.toLowerCase().includes(searchInputValue.toLowerCase());
       return nameRU || nameEN;
     });
-    localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
+    localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));    
+    // localStorage.setItem('searchInputValue', searchInputValue);
+    // localStorage.setItem('isShortFilm', String(isShortFilm));
     return filtredMovies;
   }, [searchInputValue, location.pathname, movies, isShortFilm, screenWidth, isShortSavedFilm]);
 
@@ -117,6 +119,7 @@ function MoviesCardList({
                   name={movie.nameRU}
                   savedMovies={savedMovies}
                   handleMovieLikeToggle={handleMovieLikeToggle}
+                  setSavedMovies={setSavedMovies}
                 />
               ))}
           </section>

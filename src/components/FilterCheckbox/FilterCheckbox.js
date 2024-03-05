@@ -17,7 +17,7 @@ function FilterCheckbox({ isShortFilm, setIsShortFilm, isShortSavedFilm, setIsSh
       setIsShortSavedFilm(false);
       setCurrentIsShort(false);
     }
-  }, [location.pathname]);
+  }, [location.pathname, setIsShortSavedFilm]);
 
   return (
     <section className='filter-check-box'>

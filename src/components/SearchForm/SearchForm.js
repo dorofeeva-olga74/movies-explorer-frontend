@@ -1,56 +1,71 @@
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Find from '../../images/Find.svg';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, } from 'react';
 import { useLocation } from 'react-router-dom';
 
-function SearchForm({
+function SearchForm({  
   setSearchInputValue,
-  searchInputValue,
+  searchInputValue,  
   setIsLoading,
   isShortFilm,
   setIsShortFilm,
   isShortSavedFilm,
-  setIsShortSavedFilm,
+  setIsShortSavedFilm,  
+  savedMovies,
+  setSavedMovies,  
 }) {
   const location = useLocation();
 
-  const [error, setError] = useState('');
-  const [moviesSearchInput, setMoviesSearchInput] = useState('');
+  const [error, setError] = useState('');  
+  const [isFirstSubmit, setIsFirstSubmit] = useState(true); // Флаг первого сабмита
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();     
     try {
       setIsLoading(true);
-      location.pathname === '/movies' && localStorage.setItem('searchInputValue', moviesSearchInput);
-      setSearchInputValue(moviesSearchInput);
+      setIsFirstSubmit(false); 
+      if (location.pathname === '/movies') {
+        localStorage.setItem('searchInputValue', searchInputValue);        
+      } else {
+        localStorage.setItem('searchSavedInputValue',  searchInputValue);       
+      }   
+      setSearchInputValue(searchInputValue);   
       localStorage.setItem('isShortFilm', isShortFilm);
       setError('');
     } catch (e) {
       console.error(e?.reason || e?.message);
       setIsLoading(false);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  };
+    } finally {      
+        setIsLoading(false);     
+    } 
+    setIsFirstSubmit(false); 
+  }   
+
+  useEffect(() => {
+    location.pathname === '/saved-movies' && !searchInputValue
+      ? setSearchInputValue(localStorage.getItem('searchSavedInputValue') || '')
+      : setSearchInputValue('') && setSavedMovies(localStorage.getItem('allSavedMovies', savedMovies))
+    return () => {
+      setSearchInputValue('');
+    };    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);  
 
   useEffect(() => {
     location.pathname === '/movies'
-      ? setMoviesSearchInput(localStorage.getItem('searchInputValue') || '')
-      : setMoviesSearchInput('');
+      ? setSearchInputValue(localStorage.getItem('searchInputValue') || '')
+      : setSearchInputValue('') && setSavedMovies(localStorage.getItem('allSavedMovies', savedMovies));
     return () => {
-      setMoviesSearchInput('');
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      setSearchInputValue('');
+    };    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-
+  
   useEffect(() => {
-    if (searchInputValue === '') {
+    if (!isFirstSubmit && searchInputValue === '') {
       setError('Нужно ввести ключевое слово');
     }
-  }, [searchInputValue]);
+  }, [isFirstSubmit, searchInputValue]);
 
   // useEffect(() => {
   //   // установить состояние фильтра из localStorage при монтировании компонента
@@ -59,8 +74,19 @@ function SearchForm({
   // // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []); // пустой массив зависимостей, чтобы хук сработал только один раз
 
-  const handleMoviesInput = (e) => {
-    setMoviesSearchInput(e.target.value);
+  // const handleMoviesInput = (e) => {
+  //   setMoviesSearchInput(e.target.value);
+  // };
+  // обработать изменение значения input
+  const handleInputChange = (e) => {
+    // установить значение searchInputValue
+    setSearchInputValue(e.target.value)
+    // проверить, что значение не пустое
+    // if (e.target.value === '') {
+    //   setError('Нужно ввести ключевое слово');
+    // } else {
+    //   setError('');
+    // }
   };
 
   return (
@@ -73,11 +99,11 @@ function SearchForm({
             required
             id='search-input'
             className='search__input'
-            value={moviesSearchInput}
+            value={searchInputValue}
             type='text'
             name='query'
             placeholder='Фильм'
-            onChange={(e) => handleMoviesInput(e)}
+            onChange={(e) => handleInputChange(e)}
           />
           <button
             className='search__button'
@@ -104,7 +130,6 @@ function SearchForm({
     </section>
   );
 }
-
 export default SearchForm;
 
 // import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
@@ -196,4 +221,4 @@ export default SearchForm;
 //     </section>
 //   );
 // }
-// export default SearchForm;
+// export default SearchForm

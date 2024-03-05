@@ -12,9 +12,21 @@ function Movies({
   isLoading,
   handleMovieLikeToggle,
   movies,
+  setMovies,
   savedMovies,
-  serverError,
+  setSavedMovies,
+  serverError,  
 }) {
+  // const [result, setResult] = useState([]);
+  //  // Обработчик отправки формы, который вызывает функцию поиска по данным и обновляет результат поиска в состоянии компонента
+  //  const handleSearchFormSubmit = (e) => {
+  //   // Предотвращаем перезагрузку страницы при отправке формы
+  //   e.preventDefault();
+  //   // Вызываем функцию поиска по данным, используя значение ввода в качестве аргумента
+  //   const searchResult = setMovies(searchInputValue); // вместо setMovies нужно вставить результат фильтрации т е фильтрмувис
+  //   // Обновляем результат поиска в состоянии компонента
+  //   setResult(searchResult);
+  // };
   
   return (
     <main className='main'>
@@ -24,7 +36,10 @@ function Movies({
           searchInputValue={searchInputValue}
           setIsLoading={setIsLoading}
           isShortFilm={isShortFilm}
-          setIsShortFilm={setIsShortFilm}
+          setIsShortFilm={setIsShortFilm}                    
+          savedMovies={savedMovies}
+          setSavedMovies={ setSavedMovies}
+          // onSearchFormSubmit={handleSearchFormSubmit}
         />
         {isLoading ? (
           <Preloader />

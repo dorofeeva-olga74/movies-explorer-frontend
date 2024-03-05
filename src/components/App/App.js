@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi.js';
 import { Routes, Route, useNavigate } from 'react-router-dom';
@@ -17,7 +17,7 @@ import AboutMe from '../AboutMe/AboutMe';
 import Footer from '../Footer/Footer.js';
 import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
-import { register, authorize, checkToken, getProfileInfo, changeUserData, getSavedMovies } from '../../utils/Auth.js';
+import { register, authorize, checkToken, getProfileInfo, changeUserData } from '../../utils/Auth.js';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -30,14 +30,16 @@ function App() {
   const [isUpdatedUser, setIsUpdatedUser] = useState(false); // состояние измениния данных пользователя
 
   const [movies, setMovies] = useState([]); // изначальный массив фильмов
-  const [isShortFilm, setIsShortFilm] = useState(() => {
-    // короткие фильмы состояние
-    return localStorage.getItem('isShortFilm') || false;
-  });
+  // const [isShortFilm, setIsShortFilm] = useState(() => {
+  //   // короткие фильмы состояние
+  //   return localStorage.getItem('isShortFilm') || false;
+  // });
+  const [isShortFilm, setIsShortFilm] = useState(false)
+  
   const [isShortSavedFilm, setIsShortSavedFilm] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]); // массив с сохраненнными фильмами
-  const [searchInputValue, setSearchInputValue] = useState(''); // значение поисковой строки
-
+  const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки
+  const [searchSavedInputValue, setSearchSavedInputValue] =useState(localStorage.getItem('searchSavedInputValue') ?? '')
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState(false);
   const [isContextBurgerMenuOpened, setIsContextBurgerMenuOpened] = useState(false);
@@ -56,7 +58,7 @@ function App() {
       const userDataAfterReg = await register(data);
       setCurrentUser(userDataAfterReg);
       setIsInfoTooltipStatus(true);
-      // setIsInfoTooltipOpened(true);
+      setIsInfoTooltipOpened(true);
       await handleLoginSubmit({ email: data.email, password: data.password }); // логиним сразу пользователя
       // setIsLoggedIn(true);
       setServerError({ isValid: false, text: '' });
@@ -138,7 +140,7 @@ function App() {
       setIsLoading(true);
       const updatedUserData = await changeUserData({ name, email });
       console.log(name, email);
-      // setIsInfoTooltipOpened(true);
+      setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
       setCurrentUser(updatedUserData); // обновляем данные пользователя в приложении
@@ -183,44 +185,12 @@ function App() {
     return newCard;
   };
 
-  // const getHundredMovies = async () => {
-  //   const options = {
-  //     method: 'GET',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   };
-  //   try {
-  //     const res = await fetch(`https://api.nomoreparties.co/beatfilm-movies`, options);
-  //     return res.json();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const getMoviesWhatBeenSaved = async () => {
-  //   const options = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Accept: 'application/json',
-  //       Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //     },
-  //   };
-  //   try {
-  //     const res = await fetch(`http://localhost:3000/movies`, options);
-  //     return res.json();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   // ПОЛУЧЕНИЕ ВСЕХ ФИЛЬМОВ
   const getAllMovies = async () => {
     setIsLoading(true);
-    try {
+    try {      
       const arrayWithNewCards = await moviesApi.getMovies();
+      // localStorage.setItem("allMovies", JSON.stringify(arrayWithNewCards));
       setMovies(arrayWithNewCards.map((movie) => prepearingCard(movie)));
       setServerError({ isValid: false, text: '' });
     } catch (e) {
@@ -236,31 +206,33 @@ function App() {
       }, 2000);
     }
   };
-
-  // ПОЛУЧЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ
-  const getAllLikedMovies = async () => {
-    setIsLoading(true);
-    try {
-      const allSavedMovies = await getSavedMovies();
-      if (allSavedMovies && allSavedMovies.length > 0) {
-        setSavedMovies(allSavedMovies);
-      } else {
-        // если массив пустой или не существует, вывести сообщение в консоль
-        console.log('Нет сохраненных фильмов');
-      }
-      // setSavedMovies(allSavedMovies);
-    } catch (e) {
-      console.error(e?.reason || e?.message);
-    } finally {
-      setIsLoading(false);
+  
+// ПОЛУЧЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ
+const getAllLikedMovies = async () => {
+  setIsLoading(true);
+  try {
+    const allSavedMovies = await mainApi.getSavedMovies();
+    // добавить проверку на существование и длину массива
+    if (allSavedMovies && allSavedMovies.length > 0) {
+      setSavedMovies(allSavedMovies);
+    } else {
+      // если массив пустой или не существует, вывести сообщение в консоль
+      console.log('Нет сохраненных фильмов');
     }
-  };
+  } catch (e) {
+    console.error(e?.reason || e?.message);
+  } finally {
+    setIsLoading(false);
+  }
+}; 
+
   // СОХРАНЕНИЕ ФИЛЬМОВ В ИЗБРАННЫЕ, управление кнопкой лайка
   const handleMovieLikeToggle = (movie) => {
-    const index = savedMovies.findIndex((m) => m.movieId === movie.movieId);
-    const comparisonById = savedMovies.find((obj) => obj.movieId === movie.movieId);
-    const _id = comparisonById ? comparisonById._id : null;
-    index === -1
+    const savedMovieIndex = savedMovies.findIndex((m) => m.movieId === movie.movieId);
+    // const comparisonById = savedMovies.find((obj) => obj.movieId === movie.movieId);
+    // const _id = comparisonById ? comparisonById._id : null;
+    const savedMovieId = savedMovies[savedMovieIndex]?._id;
+    savedMovieIndex === -1
       ? mainApi
           .savedMovie(movie)
           .then((res) => {
@@ -270,7 +242,7 @@ function App() {
             console.error(e?.reason || e?.message);
           })
       : mainApi
-          .deleteMovie(_id)
+          .deleteMovie(savedMovieId)
           .then(() => {
             setSavedMovies((prev) => prev.filter((obj) => obj.movieId !== movie.movieId));
           })
@@ -293,6 +265,7 @@ function App() {
     localStorage.removeItem('allMovies');
     localStorage.removeItem('allSavedMovies');
     localStorage.removeItem('searchInputValue');
+    localStorage.removeItem('searchSavedInputValue');
     navigate('/');
   };
   // ОБРАБОТЧИК Escape
@@ -326,6 +299,7 @@ function App() {
   }, [isSomePopupOpen]);
 
   // СОХРАНИЕ СОСТОЯНИЯ ФИЛЬТРА КОРОТКОМЕТРАЖЕК
+  
   // useEffect(() => {
   //   // установить состояние фильтра из localStorage при монтировании компонента
   //   const savedIsShortFilm = localStorage.getItem('isShortFilm');
@@ -347,9 +321,11 @@ function App() {
     getAllLikedMovies();
     setTimeout(() => {
       localStorage.getItem('allMovies', movies);
-      localStorage.getItem('allSavedMovies', savedMovies);
+      localStorage.getItem('allSavedMovies', savedMovies); 
+      localStorage.getItem('isShortFilm', isShortFilm);     
     }, 500);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   // ПРОВЕРКА ТОКЕНА
@@ -434,7 +410,9 @@ function App() {
                     isLoading={isLoading}
                     handleMovieLikeToggle={handleMovieLikeToggle}
                     movies={movies}
+                    setMovies={setMovies}
                     savedMovies={savedMovies}
+                    setSavedMovies={ setSavedMovies}                    
                   />
                   <Footer />
                 </>
@@ -457,9 +435,9 @@ function App() {
                   <SavedMovies
                     isShortSavedFilm={isShortSavedFilm}
                     setIsShortSavedFilm={setIsShortSavedFilm}
-                    serverError={serverError}
-                    setSearchInputValue={setSearchInputValue}
-                    searchInputValue={searchInputValue}
+                    setSearchInputValue={setSearchSavedInputValue}
+                    searchInputValue={searchSavedInputValue}
+                    serverError={serverError}                                 
                     setIsLoading={setIsLoading}
                     isShortFilm={isShortFilm}
                     setIsShortFilm={setIsShortFilm}
@@ -467,6 +445,7 @@ function App() {
                     handleMovieLikeToggle={handleMovieLikeToggle}
                     movies={savedMovies}
                     savedMovies={savedMovies}
+                    setSavedMovies={ setSavedMovies}                    
                   />
                   <Footer />
                 </>
