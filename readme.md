@@ -10,7 +10,7 @@
 
 ## Макет: dark-5
 
-- Ссылка на [макет дипломного проекта](<https://[www.figma.com/file/roTYeyJxFBEWyD8scfwuvT/Diploma-(Copy)?node-id=932%3A3886&t=7psoUgUXNEHFIt68-1]>)
+- Ссылка на [макет дипломного проекта](https://github.com/dorofeeva-olga74/movies-explorer-frontend/compare/level-3))
 
 ### Страницы проекта и роуты:
 
@@ -24,6 +24,6 @@
 
 [HTML], [React], [JavaScript], [Webpack], [CSS], [Express.js], [Git]
 
-- Ссылка на [PR](https://github.com/dorofeeva-olga74/movies-explorer-frontend/tree/level-3/pull/2)
+- Ссылка на [PR](https://github.com/dorofeeva-olga74/movies-explorer-frontend/commit/5f9c570e0d083bd2aef6b7c7a07f541609d48840)
 - Ссылка на [frontend](https://jupiter.movies.nomoredomainsmonster.ru/)
 - Ссылка на [backend](https://api.jupiter.movies.nomoredomainsmonster.ru)

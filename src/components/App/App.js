@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi.js';
 import { Routes, Route, useNavigate } from 'react-router-dom';
@@ -30,16 +30,13 @@ function App() {
   const [isUpdatedUser, setIsUpdatedUser] = useState(false); // состояние измениния данных пользователя
 
   const [movies, setMovies] = useState([]); // изначальный массив фильмов
-  // const [isShortFilm, setIsShortFilm] = useState(() => {
-  //   // короткие фильмы состояние
-  //   return localStorage.getItem('isShortFilm') || false;
-  // });
-  const [isShortFilm, setIsShortFilm] = useState(false)
-  
+  const [isShortFilm, setIsShortFilm] = useState(false); // короткие фильмы состояние
   const [isShortSavedFilm, setIsShortSavedFilm] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]); // массив с сохраненнными фильмами
   const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки
-  const [searchSavedInputValue, setSearchSavedInputValue] =useState(localStorage.getItem('searchSavedInputValue') ?? '')
+  const [searchSavedInputValue, setSearchSavedInputValue] = useState(
+    localStorage.getItem('searchSavedInputValue') ?? ''
+  );
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
   const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState(false);
   const [isContextBurgerMenuOpened, setIsContextBurgerMenuOpened] = useState(false);
@@ -60,7 +57,7 @@ function App() {
       setIsInfoTooltipStatus(true);
       setIsInfoTooltipOpened(true);
       await handleLoginSubmit({ email: data.email, password: data.password }); // логиним сразу пользователя
-      // setIsLoggedIn(true);
+      setIsLoggedIn(true);
       setServerError({ isValid: false, text: '' });
     } catch (err) {
       setServerError((prev) => ({ ...prev, isValid: true }));
@@ -90,7 +87,7 @@ function App() {
         setIsLoggedIn(true);
         navigate('/movies');
       }, 500);
-      // setIsInfoTooltipOpened(true);
+      setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
     } catch (err) {
@@ -123,7 +120,7 @@ function App() {
   // ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
   const getCurrentUser = async () => {
     try {
-      // получаем токен из localStorage
+      // получаю токен из localStorage
       const token = localStorage.getItem('token');
       const currentUser = await getProfileInfo(token);
       setCurrentUser(currentUser);
@@ -138,18 +135,17 @@ function App() {
     if (isLoading) return;
     try {
       setIsLoading(true);
-      const updatedUserData = await changeUserData({ name, email });
-      console.log(name, email);
+      const updatedUserData = await changeUserData({ name, email });      
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
-      setCurrentUser(updatedUserData); // обновляем данные пользователя в приложении
+      setCurrentUser(updatedUserData); // обновляю данные пользователя в приложении
     } catch (err) {
       if (err.includes('409')) {
         setServerError((prev) => ({
           ...prev,
           isValid: true,
-          text: 'Пользователь с таким email npm run startуже существует.',
+          text: 'Пользователь с таким email уже существует.',
         }));
       } else {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'При обновлении профиля произошла ошибка.' }));
@@ -188,9 +184,9 @@ function App() {
   // ПОЛУЧЕНИЕ ВСЕХ ФИЛЬМОВ
   const getAllMovies = async () => {
     setIsLoading(true);
-    try {      
+    try {
       const arrayWithNewCards = await moviesApi.getMovies();
-      // localStorage.setItem("allMovies", JSON.stringify(arrayWithNewCards));
+      localStorage.setItem('allMovies', JSON.stringify(arrayWithNewCards));
       setMovies(arrayWithNewCards.map((movie) => prepearingCard(movie)));
       setServerError({ isValid: false, text: '' });
     } catch (e) {
@@ -206,31 +202,27 @@ function App() {
       }, 2000);
     }
   };
-  
-// ПОЛУЧЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ
-const getAllLikedMovies = async () => {
-  setIsLoading(true);
-  try {
-    const allSavedMovies = await mainApi.getSavedMovies();
-    // добавить проверку на существование и длину массива
-    if (allSavedMovies && allSavedMovies.length > 0) {
-      setSavedMovies(allSavedMovies);
-    } else {
-      // если массив пустой или не существует, вывести сообщение в консоль
-      console.log('Нет сохраненных фильмов');
+
+  // ПОЛУЧЕНИЕ СОХРАНЕННЫХ ФИЛЬМОВ
+  const getAllLikedMovies = async () => {
+    setIsLoading(true);
+    try {
+      const allSavedMovies = await mainApi.getSavedMovies();
+      if (allSavedMovies && allSavedMovies.length > 0) {
+        setSavedMovies(allSavedMovies);
+      } else {
+        console.log('Нет сохраненных фильмов');
+      }
+    } catch (e) {
+      console.error(e?.reason || e?.message);
+    } finally {
+      setIsLoading(false);
     }
-  } catch (e) {
-    console.error(e?.reason || e?.message);
-  } finally {
-    setIsLoading(false);
-  }
-}; 
+  };
 
   // СОХРАНЕНИЕ ФИЛЬМОВ В ИЗБРАННЫЕ, управление кнопкой лайка
   const handleMovieLikeToggle = (movie) => {
     const savedMovieIndex = savedMovies.findIndex((m) => m.movieId === movie.movieId);
-    // const comparisonById = savedMovies.find((obj) => obj.movieId === movie.movieId);
-    // const _id = comparisonById ? comparisonById._id : null;
     const savedMovieId = savedMovies[savedMovieIndex]?._id;
     savedMovieIndex === -1
       ? mainApi
@@ -298,34 +290,23 @@ const getAllLikedMovies = async () => {
     }
   }, [isSomePopupOpen]);
 
-  // СОХРАНИЕ СОСТОЯНИЯ ФИЛЬТРА КОРОТКОМЕТРАЖЕК
-  
-  // useEffect(() => {
-  //   // установить состояние фильтра из localStorage при монтировании компонента
-  //   const savedIsShortFilm = localStorage.getItem('isShortFilm');
-  //   if (savedIsShortFilm) {
-  //     setIsShortFilm(savedIsShortFilm === 'false'); // преобразовать строку в булево значение
-  //   }
-  // }, []); // пустой массив зависимостей, чтобы хук сработал только один раз
-
   useEffect(() => {
     localStorage.setItem('isShortFilm', String(isShortFilm));
   }, [isShortFilm]);
 
   // ПОЛУЧЕНИЕ данных пользователя при входе, загрузка всех фильмов и загрузка сохраненных фильмов
   useEffect(() => {
-    // if (!isLoggedIn) return;
     if (!localStorage.getItem('token')) return;
     getCurrentUser();
     getAllMovies();
     getAllLikedMovies();
     setTimeout(() => {
       localStorage.getItem('allMovies', movies);
-      localStorage.getItem('allSavedMovies', savedMovies); 
-      localStorage.getItem('isShortFilm', isShortFilm);     
+      localStorage.getItem('allSavedMovies', savedMovies);
+      localStorage.getItem('isShortFilm', isShortFilm);
     }, 500);
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   // ПРОВЕРКА ТОКЕНА
@@ -358,12 +339,8 @@ const getAllLikedMovies = async () => {
                   onClose={closeAllPopups}
                   onCloseOverlay={handleOverlayClick}
                   isLoggedIn={isLoggedIn}
-                  handleExitUser={handleExitUser}
                 />
-                <Main
-                  isLoggedIn={isLoggedIn}
-                  handleExitUser={handleExitUser}
-                />
+                <Main />
                 <Footer />
               </>
             }
@@ -378,7 +355,6 @@ const getAllLikedMovies = async () => {
                   onClose={closeAllPopups}
                   onCloseOverlay={handleOverlayClick}
                   isLoggedIn={isLoggedIn}
-                  handleExitUser={handleExitUser}
                 />
                 <AboutProject />
                 <Techs />
@@ -398,21 +374,19 @@ const getAllLikedMovies = async () => {
                     onClose={closeAllPopups}
                     onCloseOverlay={handleOverlayClick}
                     isLoggedIn={isLoggedIn}
-                    handleExitUser={handleExitUser}
                   />
                   <Movies
                     serverError={serverError}
                     setSearchInputValue={setSearchInputValue}
                     searchInputValue={searchInputValue}
                     setIsLoading={setIsLoading}
-                    isShortFilm={isShortFilm}
+                    isShortFilm={isShortFilm}                    
                     setIsShortFilm={setIsShortFilm}
                     isLoading={isLoading}
                     handleMovieLikeToggle={handleMovieLikeToggle}
                     movies={movies}
-                    setMovies={setMovies}
                     savedMovies={savedMovies}
-                    setSavedMovies={ setSavedMovies}                    
+                    setSavedMovies={setSavedMovies}
                   />
                   <Footer />
                 </>
@@ -430,14 +404,13 @@ const getAllLikedMovies = async () => {
                     onClose={closeAllPopups}
                     onCloseOverlay={handleOverlayClick}
                     isLoggedIn={isLoggedIn}
-                    handleExitUser={handleExitUser}
                   />
                   <SavedMovies
                     isShortSavedFilm={isShortSavedFilm}
                     setIsShortSavedFilm={setIsShortSavedFilm}
                     setSearchInputValue={setSearchSavedInputValue}
                     searchInputValue={searchSavedInputValue}
-                    serverError={serverError}                                 
+                    serverError={serverError}
                     setIsLoading={setIsLoading}
                     isShortFilm={isShortFilm}
                     setIsShortFilm={setIsShortFilm}
@@ -445,7 +418,7 @@ const getAllLikedMovies = async () => {
                     handleMovieLikeToggle={handleMovieLikeToggle}
                     movies={savedMovies}
                     savedMovies={savedMovies}
-                    setSavedMovies={ setSavedMovies}                    
+                    setSavedMovies={setSavedMovies}
                   />
                   <Footer />
                 </>
@@ -463,7 +436,6 @@ const getAllLikedMovies = async () => {
                     onClose={closeAllPopups}
                     onCloseOverlay={handleOverlayClick}
                     isLoggedIn={isLoggedIn}
-                    handleExitUser={handleExitUser}
                   />
                   <Profile
                     setServerError={setServerError}

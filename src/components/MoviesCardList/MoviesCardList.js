@@ -16,20 +16,19 @@ const getMoviesCountOnPage = (screenWidth) => {
 };
 
 function MoviesCardList({
+  serverError,
   handleMovieLikeToggle,
   movies,
   searchInputValue,
   isShortFilm,
-  savedMovies,
-  serverError,
-  isShortSavedFilm,
-  setSavedMovies,
+  savedMovies, 
+  isShortSavedFilm, 
 }) {
   const location = useLocation();
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); // ширина экрана
   const [moviesCountOnPage, setMoviesCountOnPage] = useState(getMoviesCountOnPage(screenWidth)); // количество фильмов на странице при загрузке
- 
+
   const allFilteredMovies = useMemo(() => {
     if (!searchInputValue && location.pathname === '/movies') {
       return [];
@@ -46,9 +45,8 @@ function MoviesCardList({
       const nameEN = movie.nameEN.toLowerCase().includes(searchInputValue.toLowerCase());
       return nameRU || nameEN;
     });
-    localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));    
-    // localStorage.setItem('searchInputValue', searchInputValue);
-    // localStorage.setItem('isShortFilm', String(isShortFilm));
+    localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
+
     return filtredMovies;
   }, [searchInputValue, location.pathname, movies, isShortFilm, screenWidth, isShortSavedFilm]);
 
@@ -93,8 +91,7 @@ function MoviesCardList({
       if (timerId.current) {
         clearTimeout(timerId.current);
       }
-      // запускаю новый таймер с задержкой 300 миллисекунд
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      // запускаю новый таймер с задержкой 300 миллисекунд      
       timerId.current = setTimeout(handleResize, 300);
     });
 
@@ -103,14 +100,14 @@ function MoviesCardList({
     };
   }, [timerId, screenWidth, moviesCountOnPage]);
 
-  return (
-    <>
+  return (    
+     <>
       {serverError.isValid ? (
         <h2 className='movies-error-title'>{serverError.text}</h2>
       ) : (
         <>
           <section className='movies__card-list'>
-            {allFilteredMovies.length > 0 &&
+            {allFilteredMovies.length > 0 ? (
               visibleMovies.map((movie, index) => (
                 <MoviesCard
                   index={index + 1}
@@ -118,17 +115,19 @@ function MoviesCardList({
                   key={movie.movieId}
                   name={movie.nameRU}
                   savedMovies={savedMovies}
-                  handleMovieLikeToggle={handleMovieLikeToggle}
-                  setSavedMovies={setSavedMovies}
+                  handleMovieLikeToggle={handleMovieLikeToggle}                 
                 />
-              ))}
+              ))
+            ) : (
+              <>
+                <div className='movies__gap'></div>
+                <h2 className='movies-error-title'>
+                  {savedMovies.length > 0 ? 'Ничего не найдено' : 'Нет сохраненных фильмов.'}
+                </h2>
+              </>
+            )}
           </section>
-          {allFilteredMovies.length === 0 ? (
-            <>
-              <div className='movies__gap'></div>
-              <h2 className='movies-error-title'>Ничего не найдено</h2>
-            </>
-          ) : allFilteredMovies.length > moviesCountOnPage && location.pathname === '/movies' ? (
+          {allFilteredMovies.length > moviesCountOnPage && location.pathname === '/movies' && (
             <div className='movies__more-adding'>
               <button
                 className='movies__more-btn'
@@ -137,8 +136,6 @@ function MoviesCardList({
                 Ещё
               </button>
             </div>
-          ) : (
-            <div className='movies__gap'></div>
           )}
         </>
       )}

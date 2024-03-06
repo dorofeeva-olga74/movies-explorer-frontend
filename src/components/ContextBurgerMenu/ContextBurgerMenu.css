@@ -9,7 +9,6 @@
     visibility: hidden;
     z-index: 5;
     transition: all ease-in-out 1s;
-    /* position: fixed;     */
     position: absolute;
     opacity: 30%; 
 }

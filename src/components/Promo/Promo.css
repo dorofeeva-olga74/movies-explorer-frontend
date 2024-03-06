@@ -90,11 +90,6 @@
     background: transparent;
 }
 
-/* @media screen and (max-width:1050px) {
-    .promo {
-        gap: 50px;
-    } } */
-
 @media screen and (max-width:1050px) {
     .promo {
         display: flex;

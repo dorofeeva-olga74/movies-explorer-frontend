@@ -5,8 +5,7 @@ import Preloader from '../Preloader/Preloader.js';
 
 function SavedMovies({
   setSearchInputValue,
-  searchInputValue,
-  // searchSavedInputValue,
+  searchInputValue, 
   setIsLoading,
   isShortFilm,
   setIsShortFilm,
@@ -18,26 +17,21 @@ function SavedMovies({
   serverError,
   isShortSavedFilm,
   setIsShortSavedFilm, 
-}) {
-   // Функция для обработки сабмита формы поиска
-  //  const handleSearchSubmit = (searchQuery) => {
-  //   setSearchInputValue(searchQuery);   
-  // };
+}) {  
 
   return (
     <>
       <section className='saved-movies movies'>
         <SearchForm  
           setSearchInputValue={setSearchInputValue}
-          searchInputValue={searchInputValue}
-          // searchSavedInputValue={searchSavedInputValue}
+          searchInputValue={searchInputValue}         
           setIsLoading={setIsLoading}
           isShortFilm={isShortFilm}
           setIsShortFilm={setIsShortFilm}
           isShortSavedFilm={isShortSavedFilm}
-          setIsShortSavedFilm={setIsShortSavedFilm}
-          // onSearchFormSubmit={onSearchFormSubmit}          
+          setIsShortSavedFilm={setIsShortSavedFilm}                 
           savedMovies={savedMovies}
+          setSavedMovies={setSavedMovies}
         />
         {isLoading ? (
           <Preloader />
@@ -48,8 +42,7 @@ function SavedMovies({
             movies={movies}
             searchInputValue={searchInputValue}
             isShortFilm={isShortFilm}
-            savedMovies={savedMovies}
-            setSavedMovies={setSavedMovies}
+            savedMovies={savedMovies}            
             isShortSavedFilm={isShortSavedFilm}
           />
         )}

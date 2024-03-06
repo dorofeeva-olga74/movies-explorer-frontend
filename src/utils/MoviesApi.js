@@ -21,13 +21,9 @@ export class MoviesApi {
 
     return this.savedMoives;
   }
-
   resetSave() {
     delete this.savedMoives; // удалить свойство из объекта
-  }
-  // resetSave() {
-  //   this.savedMoives = null;
-  // }
+  }  
 }
 
 // Создание экземпляра класса MoviesApi

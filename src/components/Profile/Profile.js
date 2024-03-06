@@ -11,14 +11,12 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
   const patternEmail = '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$';
 
   const handleChangeButtonClick = () => {
-    setIsLoading(true);
-    console.log('click');
+    setIsLoading(true);    
   };
   const handleSubmit = useCallback(
     (e) => {
       // Запрещаю браузеру переходить по адресу формы
-      e.preventDefault();
-      console.log('submit');
+      e.preventDefault();      
       // Передаю значения управляемых компонентов во внешний обработчик
       onUpdateUser({ name: values.name, email: values.email });
       setServerError((prev) => ({ ...prev, isValid: true }));
@@ -49,7 +47,7 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
     <main>
       <section className='profile'>
         <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
-        <form
+        <form noValidate
           className='profile__form'
           onSubmit={handleClick}>
           <div className='profile__data-box'>
@@ -103,7 +101,7 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
         {isLoading ? (
           <>
             <span className='profile__error-server'>{serverError.text}</span>
-            <button
+            <button formNoValidate
               className={'profile__edit-btn_submit'}
               disabled={!isValid || (serverError.isValid === true && serverError.text !== '')}
               type='submit'

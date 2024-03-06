@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 import Error from '../Error/Error';
@@ -29,7 +29,6 @@ function Register({ onSubmit, serverError, setServerError }) {
     });
     setServerError((prev) => ({ ...prev, isValid: true }));
   };
-  // console.log(typeof patternName);
 
   return (
     <main>

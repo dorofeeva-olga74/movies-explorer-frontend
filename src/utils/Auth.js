@@ -1,6 +1,5 @@
-// const BASE_URL = 'jupiter.movies.nomoredomainsmonster.ru'
-//const BASE_URL = "https://api.jupiter.nomoredomainsmonster.ru";
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://api.jupiter.nomoredomainsmonster.ru'; 
+// const BASE_URL = 'http://localhost:3000';
 
 // Приватный метод ответа сервера
 const getResponse = (res) => {
@@ -20,7 +19,7 @@ export const register = async (data) => {
   const options = {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data), // отправляю данные на сервер
@@ -38,7 +37,7 @@ export const authorize = async ({ password, email }) => {
   const options = {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
@@ -55,9 +54,9 @@ export const getProfileInfo = async (token) => {
   const options = {
     method: 'GET',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
     },
   };
   try {
@@ -73,9 +72,9 @@ export const checkToken = async (token) => {
   const options = {
     method: 'GET',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
     },
   };
   try {
@@ -86,13 +85,13 @@ export const checkToken = async (token) => {
   }
 };
 // Изменение данных пользователя - отправляет запрос на изменение данных пользователя
-export const changeUserData = async (data, token) => {
-  console.log(data);
+export const changeUserData = async (data) => {
+  // console.log(data);
   const options = {
     method: 'PATCH',
     headers: {
-      authorization: `Bearer ${localStorage.getItem('token')}`,
-      Accept: 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -103,22 +102,6 @@ export const changeUserData = async (data, token) => {
   try {
     const res = await fetch(`${BASE_URL}/users/me`, options);
     return getResponse(res);
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const getSavedMovies = async () => {
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  };
-  try {
-    const res = await fetch(`http://localhost:3000/movies`, options);
-    return res.json();
   } catch (error) {
     console.log(error);
   }

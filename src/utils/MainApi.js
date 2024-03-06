@@ -6,7 +6,7 @@ export class MainApi {
   }
   // приватный метод ответа сервера
   _getResponse(res) {
-    console.log(res)
+    // console.log(res)
     if (res.ok) {
       return res.json();
     }    
@@ -17,7 +17,10 @@ export class MainApi {
     try {
       const res = await fetch(url, {
         ...options,
-        'authorization': `Bearer ${localStorage.getItem('token')}`,
+        headers: {
+          ...this._headers,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        }
       });
       return this._getResponse(res);
     } catch (error) {
@@ -28,7 +31,10 @@ export class MainApi {
   async getSavedMovies() {
     try {
       const res = await this._request(`${this._url}/movies`, {
-        headers: this._headers,
+        headers: {
+          ...this._headers,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       return res;
     } catch (error) {
@@ -38,7 +44,10 @@ export class MainApi {
   // удаление карточки из сохраненных
   async deleteMovie(movieId) {
     const options = {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
       method: 'DELETE',
     };
     try {
@@ -51,7 +60,10 @@ export class MainApi {
   // отправление данных о сохраненных фильмах // сохранить фильмы
   async savedMovie(movie) {
     const options = {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
       method: 'POST',
       body: JSON.stringify(movie),
     };
@@ -65,12 +77,11 @@ export class MainApi {
 }
 //создание экземпляра класса MainApi
 export const mainApi = new MainApi({
-  //url: 'https://api.jupiter.movies.nomoredomainsmonster.ru'
-  url: 'http://localhost:3000',
+  url: 'https://api.jupiter.movies.nomoredomainsmonster.ru',
+  // url: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+    'Accept': 'application/json',    
   },
 });
 
