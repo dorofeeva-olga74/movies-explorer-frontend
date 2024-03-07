@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.jupiter.nomoredomainsmonster.ru'; 
+const BASE_URL = 'https://api.jupiter.movies.nomoredomainsmonster.ru'; 
 // const BASE_URL = 'http://localhost:3000';
 
 // Приватный метод ответа сервера
