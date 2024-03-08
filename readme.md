@@ -24,6 +24,6 @@
 
 [HTML], [React], [JavaScript], [Webpack], [CSS], [Express.js], [Git]
 
-- Ссылка на [PR](https://github.com/dorofeeva-olga74/movies-explorer-frontend/commit/5f9c570e0d083bd2aef6b7c7a07f541609d48840)
+- Ссылка на [PR](https://github.com/dorofeeva-olga74/movies-explorer-frontend/pull/2)
 - Ссылка на [frontend](https://jupiter.movies.nomoredomainsmonster.ru/)
 - Ссылка на [backend](https://api.jupiter.movies.nomoredomainsmonster.ru)
