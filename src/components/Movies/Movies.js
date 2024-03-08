@@ -31,16 +31,14 @@ function Movies({
         {isLoading ? (
           <Preloader />
         ) : (
-          <>
-            <MoviesCardList
-              serverError={serverError}
-              handleMovieLikeToggle={handleMovieLikeToggle}
-              movies={movies}
-              searchInputValue={searchInputValue}
-              isShortFilm={isShortFilm}
-              savedMovies={savedMovies}
-            />
-          </>
+          <MoviesCardList
+            serverError={serverError}
+            handleMovieLikeToggle={handleMovieLikeToggle}
+            movies={movies}
+            searchInputValue={searchInputValue}
+            isShortFilm={isShortFilm}
+            savedMovies={savedMovies}
+          />
         )}
       </section>
     </main>

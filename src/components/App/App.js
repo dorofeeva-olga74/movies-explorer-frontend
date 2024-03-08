@@ -61,6 +61,7 @@ function App() {
       setServerError({ isValid: false, text: '' });
     } catch (err) {
       setServerError((prev) => ({ ...prev, isValid: true }));
+      console.log(err);
       if (err.includes('409')) {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'Пользователь с таким email уже существует.' }));
       } else {
@@ -135,7 +136,7 @@ function App() {
     if (isLoading) return;
     try {
       setIsLoading(true);
-      const updatedUserData = await changeUserData({ name, email });      
+      const updatedUserData = await changeUserData({ name, email });
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
@@ -380,7 +381,7 @@ function App() {
                     setSearchInputValue={setSearchInputValue}
                     searchInputValue={searchInputValue}
                     setIsLoading={setIsLoading}
-                    isShortFilm={isShortFilm}                    
+                    isShortFilm={isShortFilm}
                     setIsShortFilm={setIsShortFilm}
                     isLoading={isLoading}
                     handleMovieLikeToggle={handleMovieLikeToggle}

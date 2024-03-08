@@ -9,7 +9,7 @@ export class MainApi {
     // console.log(res)
     if (res.ok) {
       return res.json();
-    }    
+    }
     return Promise.reject(`Error: ${res.status}`);
   }
 
@@ -19,8 +19,8 @@ export class MainApi {
         ...options,
         headers: {
           ...this._headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       return this._getResponse(res);
     } catch (error) {
@@ -33,7 +33,7 @@ export class MainApi {
       const res = await this._request(`${this._url}/movies`, {
         headers: {
           ...this._headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       return res;
@@ -46,7 +46,7 @@ export class MainApi {
     const options = {
       headers: {
         ...this._headers,
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'DELETE',
     };
@@ -62,7 +62,7 @@ export class MainApi {
     const options = {
       headers: {
         ...this._headers,
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       method: 'POST',
       body: JSON.stringify(movie),
@@ -81,8 +81,6 @@ export const mainApi = new MainApi({
   // url: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',    
+    Accept: 'application/json',
   },
 });
-
-

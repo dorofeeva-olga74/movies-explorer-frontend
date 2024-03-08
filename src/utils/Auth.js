@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.jupiter.movies.nomoredomainsmonster.ru'; 
+const BASE_URL = 'https://api.jupiter.movies.nomoredomainsmonster.ru';
 // const BASE_URL = 'http://localhost:3000';
 
 // Приватный метод ответа сервера
@@ -9,7 +9,7 @@ const getResponse = (res) => {
   }
   if (res.status === 403) {
     // Выбрасываю исключение с текстом ошибки
-    throw new Error("INVALID_TOKEN");
+    throw new Error('INVALID_TOKEN');
   }
   return Promise.reject(`Ошибка: ${res.status}`);
 };
@@ -19,7 +19,7 @@ export const register = async (data) => {
   const options = {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data), // отправляю данные на сервер
@@ -37,7 +37,7 @@ export const authorize = async ({ password, email }) => {
   const options = {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, email }),
@@ -54,9 +54,9 @@ export const getProfileInfo = async (token) => {
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
   try {
@@ -72,9 +72,9 @@ export const checkToken = async (token) => {
   const options = {
     method: 'GET',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
   try {
@@ -90,8 +90,8 @@ export const changeUserData = async (data) => {
   const options = {
     method: 'PATCH',
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      'Accept': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

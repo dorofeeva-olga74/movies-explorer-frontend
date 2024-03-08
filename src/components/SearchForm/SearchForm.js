@@ -1,6 +1,6 @@
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Find from '../../images/Find.svg';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function SearchForm({
@@ -17,31 +17,29 @@ function SearchForm({
   const location = useLocation();
   const [error, setError] = useState('');
   const [isFirstSubmit, setIsFirstSubmit] = useState(true); // Флаг первого сабмита
+  const [localeInput, setLocaleInput] = useState(searchInputValue);
 
-  const handleSearchSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      try {
-        setIsLoading(true);
-        setIsFirstSubmit(false);
-        if (location.pathname === '/movies') {
-          localStorage.setItem('searchInputValue', searchInputValue);
-        } else {
-          localStorage.setItem('searchSavedInputValue', searchInputValue);
-        }
-        setSearchInputValue(searchInputValue);
-        localStorage.setItem('isShortFilm', isShortFilm);
-        setError('');
-      } catch (e) {
-        console.error(e?.reason || e?.message);
-        setIsLoading(false);
-      } finally {
-        setIsLoading(false);
-      }
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    try {
+      setIsLoading(true);
       setIsFirstSubmit(false);
-    },
-    [location.pathname, searchInputValue, isShortFilm, setIsLoading, setSearchInputValue]
-  );
+      if (location.pathname === '/movies') {
+        localStorage.setItem('searchInputValue', searchInputValue);
+      } else {
+        localStorage.setItem('searchSavedInputValue', searchInputValue);
+      }
+      setSearchInputValue(localeInput);
+      localStorage.setItem('isShortFilm', isShortFilm);
+      setError('');
+    } catch (e) {
+      console.error(e?.reason || e?.message);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+    setIsFirstSubmit(false);
+  };
 
   useEffect(() => {
     location.pathname === '/saved-movies' && !searchInputValue
@@ -69,8 +67,12 @@ function SearchForm({
 
   // обработать изменение значения input
   const handleInputChange = (e) => {
-    setSearchInputValue(e.target.value);
+    setLocaleInput(e.target.value);
   };
+
+  useEffect(() => {
+    setLocaleInput(searchInputValue);
+  }, [searchInputValue]);
 
   return (
     <section className='search'>
@@ -83,7 +85,7 @@ function SearchForm({
             required
             id='search-input'
             className='search__input'
-            value={searchInputValue}
+            value={localeInput}
             type='text'
             name='query'
             placeholder='Фильм'
@@ -92,8 +94,7 @@ function SearchForm({
           <button
             className='search__button'
             type='submit'
-            aria-label='Найти'
-            disabled={!searchInputValue}>
+            aria-label='Найти'>
             <img
               className='search__img'
               src={Find}

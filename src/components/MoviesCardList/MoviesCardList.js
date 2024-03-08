@@ -21,8 +21,8 @@ function MoviesCardList({
   movies,
   searchInputValue,
   isShortFilm,
-  savedMovies, 
-  isShortSavedFilm, 
+  savedMovies,
+  isShortSavedFilm,
 }) {
   const location = useLocation();
 
@@ -91,7 +91,7 @@ function MoviesCardList({
       if (timerId.current) {
         clearTimeout(timerId.current);
       }
-      // запускаю новый таймер с задержкой 300 миллисекунд      
+      // запускаю новый таймер с задержкой 300 миллисекунд
       timerId.current = setTimeout(handleResize, 300);
     });
 
@@ -100,8 +100,8 @@ function MoviesCardList({
     };
   }, [timerId, screenWidth, moviesCountOnPage]);
 
-  return (    
-     <>
+  return (
+    <>
       {serverError.isValid ? (
         <h2 className='movies-error-title'>{serverError.text}</h2>
       ) : (
@@ -115,15 +115,16 @@ function MoviesCardList({
                   key={movie.movieId}
                   name={movie.nameRU}
                   savedMovies={savedMovies}
-                  handleMovieLikeToggle={handleMovieLikeToggle}                 
+                  handleMovieLikeToggle={handleMovieLikeToggle}
                 />
               ))
             ) : (
               <>
                 <div className='movies__gap'></div>
-                <h2 className='movies-error-title'>
+                <h2 className='movies-error-title'>Нет сохраненных фильмов.</h2>
+                {/* <h2 className='movies-error-title'>
                   {savedMovies.length > 0 ? 'Ничего не найдено' : 'Нет сохраненных фильмов.'}
-                </h2>
+                </h2> */}
               </>
             )}
           </section>
