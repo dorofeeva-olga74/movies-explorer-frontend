@@ -121,7 +121,7 @@ function MoviesCardList({
             ) : (
               <>
                 <div className='movies__gap'></div>
-                <h2 className='movies-error-title'>Нет сохраненных фильмов.</h2>
+                <h2 className='movies-error-title'>Ничего не найдено.</h2>
                 {/* <h2 className='movies-error-title'>
                   {savedMovies.length > 0 ? 'Ничего не найдено' : 'Нет сохраненных фильмов.'}
                 </h2> */}
