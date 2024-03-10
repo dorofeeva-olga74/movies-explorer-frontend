@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi.js';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import CurrentUserContext from '../../contecst/CurrentUserContext.js';
 import Header from '../Header/Header';
 import Main from '../Main/Main.js';
 import Movies from '../Movies/Movies.js';
 import SavedMovies from '../SavedMovies/SavedMovies.js';
-// import Preloader from '../Preloader/Preloader.js';
+import Preloader from '../Preloader/Preloader.js';
 import { Profile } from '../Profile/Profile.js';
 import Register from '../Register/Register.js';
 import Login from '../Login/login.js';
@@ -21,7 +21,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 import { register, authorize, checkToken, getProfileInfo, changeUserData } from '../../utils/Auth.js';
 
 function App() {
-  // const [isTokenChecked, setIsTokenChecked] = useState(false); // состояние, которое отслеживает, была ли проверка токена завершена
+  const [isTokenChecked, setIsTokenChecked] = useState(false); // состояние, которое отслеживает, была ли проверка токена завершена
   const [currentUser, setCurrentUser] = useState({
     // пользователь
     name: '',
@@ -322,16 +322,18 @@ function App() {
           });
           setIsLoggedIn(true);
         })
-        .catch((err) => console.log(err));
-      //     .finally(() => {
-      //       setIsTokenChecked(true);
-      //     });
-      // } else {
-      //   setIsTokenChecked(true);
+        .catch((err) => console.log(err))
+        .finally(() => {
+          setIsTokenChecked(true);
+        });
+    } else {
+      setIsTokenChecked(true);
     }
-  }, []);
+  }, []); 
 
-  return (
+  return !isTokenChecked ? (
+    <Preloader /> // Компонент загрузки
+  ) : (
     <CurrentUserContext.Provider value={{ currentUser }}>
       <div className='app'>
         <Routes>
@@ -458,21 +460,35 @@ function App() {
           <Route
             path='/signup'
             element={
-              <Register
-                setServerError={setServerError}
-                serverError={serverError}
-                onSubmit={handleRegisterSubmit}
-              />
+              isLoggedIn ? (
+                <Navigate
+                  replace
+                  to='/'
+                />
+              ) : (
+                <Register
+                  setServerError={setServerError}
+                  serverError={serverError}
+                  onSubmit={handleRegisterSubmit}
+                />
+              )
             }
           />
           <Route
             path='/signin'
             element={
-              <Login
-                setServerError={setServerError}
-                serverError={serverError}
-                onSubmit={handleLoginSubmit}
-              />
+              isLoggedIn ? (
+                <Navigate
+                  replace
+                  to='/'
+                />
+              ) : (
+                <Login
+                  setServerError={setServerError}
+                  serverError={serverError}
+                  onSubmit={handleLoginSubmit}
+                />
+              )
             }
           />
           <Route
@@ -485,188 +501,10 @@ function App() {
           onCloseOverlay={handleOverlayClick}
           onClose={closeAllPopups}
           status={isInfoTooltipStatus}
-          text={isInfoTooltipStatus ? 'Результат успешен!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
+          text={isInfoTooltipStatus ? 'Результат успешен!' : serverError.text}
         />
       </div>
     </CurrentUserContext.Provider>
   );
 }
 export default App;
-
-//   return !isTokenChecked ? (
-//     <Preloader /> // Компонент загрузки
-//   ) : (
-//     <CurrentUserContext.Provider value={{ currentUser }}>
-//       <div className='app'>
-//         <Routes>
-//           <Route
-//             path='/'
-//             element={
-//               <>
-//                 <Header
-//                   isOpen={isContextBurgerMenuOpened}
-//                   setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
-//                   onClose={closeAllPopups}
-//                   onCloseOverlay={handleOverlayClick}
-//                   isLoggedIn={isLoggedIn}
-//                 />
-//                 <Main />
-//                 <Footer />
-//               </>
-//             }
-//           />
-//           <Route
-//             path='/about-project'
-//             element={
-//               <>
-//                 <Header
-//                   isOpen={isContextBurgerMenuOpened}
-//                   setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
-//                   onClose={closeAllPopups}
-//                   onCloseOverlay={handleOverlayClick}
-//                   isLoggedIn={isLoggedIn}
-//                 />
-//                 <AboutProject />
-//                 <Techs />
-//                 <AboutMe />
-//                 <Footer />
-//               </>
-//             }
-//           />
-//           <Route
-//             path='/movies'
-//             element={
-//               <ProtectedRoute isLoggedIn={isLoggedIn}>
-//                 <>
-//                   <Header
-//                     isOpen={isContextBurgerMenuOpened}
-//                     setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
-//                     onClose={closeAllPopups}
-//                     onCloseOverlay={handleOverlayClick}
-//                     isLoggedIn={isLoggedIn}
-//                   />
-//                   <Movies
-//                     serverError={serverError}
-//                     setSearchInputValue={setSearchInputValue}
-//                     searchInputValue={searchInputValue}
-//                     setIsLoading={setIsLoading}
-//                     isShortFilm={isShortFilm}
-//                     setIsShortFilm={setIsShortFilm}
-//                     isLoading={isLoading}
-//                     handleMovieLikeToggle={handleMovieLikeToggle}
-//                     movies={movies}
-//                     savedMovies={savedMovies}
-//                     setSavedMovies={setSavedMovies}
-//                   />
-//                   <Footer />
-//                 </>
-//               </ProtectedRoute>
-//             }
-//           />
-//           <Route
-//             path='/saved-movies'
-//             element={
-//               <ProtectedRoute isLoggedIn={isLoggedIn}>
-//                 <>
-//                   <Header
-//                     isOpen={isContextBurgerMenuOpened}
-//                     setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
-//                     onClose={closeAllPopups}
-//                     onCloseOverlay={handleOverlayClick}
-//                     isLoggedIn={isLoggedIn}
-//                   />
-//                   <SavedMovies
-//                     isShortSavedFilm={isShortSavedFilm}
-//                     setIsShortSavedFilm={setIsShortSavedFilm}
-//                     setSearchInputValue={setSearchSavedInputValue}
-//                     searchInputValue={searchSavedInputValue}
-//                     serverError={serverError}
-//                     setIsLoading={setIsLoading}
-//                     isShortFilm={isShortFilm}
-//                     setIsShortFilm={setIsShortFilm}
-//                     isLoading={isLoading}
-//                     handleMovieLikeToggle={handleMovieLikeToggle}
-//                     movies={savedMovies}
-//                     savedMovies={savedMovies}
-//                     setSavedMovies={setSavedMovies}
-//                   />
-//                   <Footer />
-//                 </>
-//               </ProtectedRoute>
-//             }
-//           />
-//           <Route
-//             path='/profile'
-//             element={
-//               <ProtectedRoute isLoggedIn={isLoggedIn}>
-//                 <>
-//                   <Header
-//                     isOpen={isContextBurgerMenuOpened}
-//                     setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
-//                     onClose={closeAllPopups}
-//                     onCloseOverlay={handleOverlayClick}
-//                     isLoggedIn={isLoggedIn}
-//                   />
-//                   <Profile
-//                     setServerError={setServerError}
-//                     serverError={serverError}
-//                     handleExitUser={handleExitUser}
-//                     isUpdatedUser={isUpdatedUser}
-//                     setIsUpdatedUser={setIsUpdatedUser}
-//                     onUpdateUser={handleUpdateUser}
-//                   />
-//                 </>
-//               </ProtectedRoute>
-//             }
-//           />
-//           <Route
-//             path='/signup'
-//             element={
-//               isLoggedIn ? (
-//                 <Navigate
-//                   replace
-//                   to='/'
-//                 />
-//               ) : (
-//                 <Register
-//                   setServerError={setServerError}
-//                   serverError={serverError}
-//                   onSubmit={handleRegisterSubmit}
-//                 />
-//               )
-//             }
-//           />
-//           <Route
-//             path='/signin'
-//             element={
-//               isLoggedIn ? (
-//                 <Navigate
-//                   replace
-//                   to='/'
-//                 />
-//               ) : (
-//                 <Login
-//                   setServerError={setServerError}
-//                   serverError={serverError}
-//                   onSubmit={handleLoginSubmit}
-//                 />
-//               )
-//             }
-//           />
-//           <Route
-//             path='*'
-//             element={<NotFound />}
-//           />
-//         </Routes>
-//         <InfoTooltip
-//           isOpen={isInfoTooltipOpened}
-//           onCloseOverlay={handleOverlayClick}
-//           onClose={closeAllPopups}
-//           status={isInfoTooltipStatus}
-//           text={isInfoTooltipStatus ? 'Результат успешен!' : serverError.text}
-//         />
-//       </div>
-//     </CurrentUserContext.Provider>
-//   );
-// }
-// export default App;
