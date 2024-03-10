@@ -74,9 +74,9 @@ function App() {
         setIsInfoTooltipStatus(false);
         console.error(err?.reason || err?.message);
       }
-      setIsLoading(false);
     } finally {
       setIsLoading(false);
+      // setIsInfoTooltipOpened(false);
     }
   };
 
@@ -88,8 +88,8 @@ function App() {
       localStorage.setItem('token', response.token); // сохраняем токен в хранилище
       setIsLoggedIn(true);
       navigate('/movies');
-      setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
+      setIsInfoTooltipOpened(true);
       setServerError({ isValid: false, text: '' });
     } catch (err) {
       if (err.includes('401')) {
@@ -110,7 +110,6 @@ function App() {
       console.error(err?.reason || err?.message);
       // setIsInfoTooltipOpened(false);
       setIsInfoTooltipStatus(false);
-      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -132,7 +131,7 @@ function App() {
   const handleUpdateUser = async ({ name, email }) => {
     // Проверяю изменились ли данные
     if (name === currentUser.name && email === currentUser.email) {
-      console.log('Данные не изменились.');
+      // console.log('Данные не изменились.');
       setIsUpdatedUser(false);
       return;
     }
@@ -140,8 +139,8 @@ function App() {
       setIsLoading(true);
       setIsUpdatedUser(true); // состояние изменения данных пользователя
       const updatedUserData = await changeUserData({ name, email });
-      setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
+      setIsInfoTooltipOpened(true);
       setServerError({ isValid: false, text: '' });
       setCurrentUser(updatedUserData); // Обновляю данные пользователя в приложении
     } catch (err) {
@@ -157,7 +156,6 @@ function App() {
       console.error(err?.reason || err?.message);
       // setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(false);
-      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -301,8 +299,8 @@ function App() {
   // ПОЛУЧЕНИЕ данных пользователя при входе, загрузка всех фильмов и загрузка сохраненных фильмов
   useEffect(() => {
     if (!localStorage.getItem('token')) return;
-    getCurrentUser();
     getAllMovies();
+    getCurrentUser();
     getAllLikedMovies();
     localStorage.getItem('allMovies', movies);
     localStorage.getItem('allSavedMovies', savedMovies);
