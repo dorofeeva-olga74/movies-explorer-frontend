@@ -38,7 +38,7 @@ function App() {
 
   const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки на странице "Фильмы"
   const [searchSavedInputValue, setSearchSavedInputValue] = useState(
-    // значение поисковой строки на странице "сохраненные фильмы"
+    // значение поисковой строки на странице "сохраненные фильмы2"
     localStorage.getItem('searchSavedInputValue') ?? ''
   );
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
@@ -143,7 +143,7 @@ function App() {
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
-      setCurrentUser(updatedUserData); //  Обновляю данные пользователя в приложении
+      setCurrentUser(updatedUserData); // Обновляю данные пользователя в приложении
     } catch (err) {
       if (err.includes('409')) {
         setServerError((prev) => ({
@@ -160,7 +160,6 @@ function App() {
       setIsLoading(false);
     } finally {
       setIsLoading(false);
-      setIsUpdatedUser(false); // Сброс состояния изменения данных пользователя
     }
   };
 
@@ -330,7 +329,7 @@ function App() {
     } else {
       setIsTokenChecked(true);
     }
-  }, []); 
+  }, []);
 
   return !isTokenChecked ? (
     <Preloader /> // Компонент загрузки

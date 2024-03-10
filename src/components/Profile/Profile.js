@@ -13,7 +13,8 @@ export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpd
   const handleChangeButtonClick = () => {
     setIsUpdatedUser(true);    
   };
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(
+    (e) => {
       // Запрещаю браузеру переходить по адресу формы
       e.preventDefault();   
       // Передаю значения управляемых компонентов во внешний обработчик
@@ -27,7 +28,6 @@ export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpd
   const handleFocus = () => {
     setServerError({ isValid: false, text: '' });
   };
-
   useEffect(() => {
     values.name !== currentUser.name || values.email !== currentUser.email ? setIsUpdatedUser(true) : setIsUpdatedUser(false);
   }, [values.name, currentUser.name, values.email, currentUser.email, setIsUpdatedUser]);
@@ -98,7 +98,7 @@ export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpd
           </div>
           <Error error={errors.email} />
         </form>
-        {isUpdatedUser ? ( //isUpdatedUser - состояние изменения данных пользователя
+        {isUpdatedUser ? ( // isUpdatedUser - состояние изменения данных пользователя
           <>
             <span className='profile__error-server'>{serverError.text}</span>
             <button formNoValidate
