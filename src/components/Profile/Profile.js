@@ -3,25 +3,26 @@ import CurrentUserContext from '../../contecst/CurrentUserContext.js';
 import { useFormWithValidation } from '../../validation/validation.js';
 import Error from '../Error/Error.js';
 
-export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading, serverError, setServerError }) {
+export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpdateUser, serverError, setServerError }) {
   const { currentUser } = useContext(CurrentUserContext);
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();  
 
   const patternName = '[a-zA-Zа-яА-ЯЁё \\-]{1,30}';
   const patternEmail = '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$';
 
   const handleChangeButtonClick = () => {
-    setIsLoading(true);    
+    setIsUpdatedUser(true);    
   };
   const handleSubmit = useCallback(
     (e) => {
       // Запрещаю браузеру переходить по адресу формы
-      e.preventDefault();      
+      e.preventDefault();   
       // Передаю значения управляемых компонентов во внешний обработчик
       onUpdateUser({ name: values.name, email: values.email });
       setServerError((prev) => ({ ...prev, isValid: true }));
+      setIsUpdatedUser(true)
     },
-    [onUpdateUser, values.name, values.email, setServerError]
+    [values.name, values.email, onUpdateUser, setServerError, setIsUpdatedUser]
   );
   // функция-обработчик события onFocus
   const handleFocus = () => {
@@ -29,11 +30,11 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
   };
 
   useEffect(() => {
-    values.name !== currentUser.name || values.email !== currentUser.email ? setIsLoading(true) : setIsLoading(false);
-  }, [values.name, currentUser.name, values.email, currentUser.email, setIsLoading]);
+    values.name !== currentUser.name || values.email !== currentUser.email ? setIsUpdatedUser(true) : setIsUpdatedUser(false);
+  }, [values.name, currentUser.name, values.email, currentUser.email, setIsUpdatedUser]);
 
   const handleClick = (e) => {
-    if (!isLoading) {
+    if (!isUpdatedUser) {
       handleChangeButtonClick(e);
     } else {
       handleSubmit(e);
@@ -67,7 +68,7 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
               pattern={patternName}
               onChange={handleChange}
               onFocus={handleFocus}
-              disabled={!isLoading}
+              disabled={!isUpdatedUser}
               error={errors.name}
               minLength='2'
               maxLength='30'
@@ -91,19 +92,19 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
               onChange={handleChange}
               onFocus={handleFocus}
               autoComplete='off'
-              disabled={!isLoading}
+              disabled={!isUpdatedUser}
               pattern={patternEmail}
               error={errors.email}
             />
           </div>
           <Error error={errors.email} />
         </form>
-        {isLoading ? (
+        {isUpdatedUser ? ( //isUpdatedUser - состояние изменения данных пользователя
           <>
             <span className='profile__error-server'>{serverError.text}</span>
             <button formNoValidate
               className={'profile__edit-btn_submit'}
-              disabled={!isValid || (serverError.isValid === true && serverError.text !== '')}
+              disabled={!isValid || (serverError.isValid === true && serverError.text !== '') || !isUpdatedUser}
               type='submit'
               onClick={handleClick}>
               {'Сохранить'}
@@ -113,7 +114,7 @@ export function Profile({ handleExitUser, isLoading, onUpdateUser, setIsLoading,
           <>
             <button
               className='profile__edit-btn'
-              type='button'
+              type='button'             
               onClick={handleClick}>
               {'Редактировать'}
             </button>

@@ -7,6 +7,7 @@ import Header from '../Header/Header';
 import Main from '../Main/Main.js';
 import Movies from '../Movies/Movies.js';
 import SavedMovies from '../SavedMovies/SavedMovies.js';
+// import Preloader from '../Preloader/Preloader.js';
 import { Profile } from '../Profile/Profile.js';
 import Register from '../Register/Register.js';
 import Login from '../Login/login.js';
@@ -20,6 +21,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 import { register, authorize, checkToken, getProfileInfo, changeUserData } from '../../utils/Auth.js';
 
 function App() {
+  // const [isTokenChecked, setIsTokenChecked] = useState(false); // состояние, которое отслеживает, была ли проверка токена завершена
   const [currentUser, setCurrentUser] = useState({
     // пользователь
     name: '',
@@ -33,8 +35,10 @@ function App() {
   const [isShortFilm, setIsShortFilm] = useState(false); // короткие фильмы состояние
   const [isShortSavedFilm, setIsShortSavedFilm] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]); // массив с сохраненнными фильмами
-  const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки
+
+  const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки на странице "Фильмы"
   const [searchSavedInputValue, setSearchSavedInputValue] = useState(
+    // значение поисковой строки на странице "сохраненные фильмы2"
     localStorage.getItem('searchSavedInputValue') ?? ''
   );
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
@@ -72,9 +76,7 @@ function App() {
       }
       setIsLoading(false);
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
     }
   };
 
@@ -84,10 +86,8 @@ function App() {
       setIsLoading(true);
       const response = await authorize(data);
       localStorage.setItem('token', response.token); // сохраняем токен в хранилище
-      setTimeout(() => {
-        setIsLoggedIn(true);
-        navigate('/movies');
-      }, 500);
+      setIsLoggedIn(true);
+      navigate('/movies');
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
@@ -112,9 +112,7 @@ function App() {
       setIsInfoTooltipStatus(false);
       setIsLoading(false);
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
     }
   };
 
@@ -132,15 +130,20 @@ function App() {
 
   // ИЗМЕНЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
   const handleUpdateUser = async ({ name, email }) => {
-    setIsUpdatedUser(true);
-    if (isLoading) return;
+    // Проверяю изменились ли данные
+    // if (name === currentUser.name && email === currentUser.email) {
+    //   console.log('Данные не изменились.');
+    //   setIsUpdatedUser(false);
+    //   return;
+    // }
     try {
       setIsLoading(true);
+      setIsUpdatedUser(true); // состояние изменения данных пользователя
       const updatedUserData = await changeUserData({ name, email });
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
-      setCurrentUser(updatedUserData); // обновляю данные пользователя в приложении
+      setCurrentUser(updatedUserData); // Обновляю данные пользователя в приложении
     } catch (err) {
       if (err.includes('409')) {
         setServerError((prev) => ({
@@ -156,9 +159,7 @@ function App() {
       setIsInfoTooltipStatus(false);
       setIsLoading(false);
     } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
     }
   };
 
@@ -253,12 +254,14 @@ function App() {
       name: '',
       email: '',
     }));
+    setSavedMovies([]); // Очищаю локальное состояние сохраненных фильмов
     localStorage.removeItem('token');
     localStorage.removeItem('isShortFilm');
     localStorage.removeItem('allMovies');
     localStorage.removeItem('allSavedMovies');
     localStorage.removeItem('searchInputValue');
     localStorage.removeItem('searchSavedInputValue');
+    localStorage.removeItem('allFilteredMovies'); // Очищаю локальное хранилище все отфильтрованных фильмов
     navigate('/');
   };
   // ОБРАБОТЧИК Escape
@@ -301,12 +304,9 @@ function App() {
     getCurrentUser();
     getAllMovies();
     getAllLikedMovies();
-    setTimeout(() => {
-      localStorage.getItem('allMovies', movies);
-      localStorage.getItem('allSavedMovies', savedMovies);
-      localStorage.getItem('isShortFilm', isShortFilm);
-    }, 500);
-
+    localStorage.getItem('allMovies', movies);
+    localStorage.getItem('allSavedMovies', savedMovies);
+    localStorage.getItem('isShortFilm', isShortFilm);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
@@ -322,7 +322,12 @@ function App() {
           });
           setIsLoggedIn(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+    //     .finally(() => {
+    //       setIsTokenChecked(true);
+    //     });
+    // } else {
+    //   setIsTokenChecked(true);
     }
   }, []);
 
@@ -487,3 +492,181 @@ function App() {
   );
 }
 export default App;
+
+//   return !isTokenChecked ? (
+//     <Preloader /> // Компонент загрузки
+//   ) : (
+//     <CurrentUserContext.Provider value={{ currentUser }}>
+//       <div className='app'>
+//         <Routes>
+//           <Route
+//             path='/'
+//             element={
+//               <>
+//                 <Header
+//                   isOpen={isContextBurgerMenuOpened}
+//                   setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
+//                   onClose={closeAllPopups}
+//                   onCloseOverlay={handleOverlayClick}
+//                   isLoggedIn={isLoggedIn}
+//                 />
+//                 <Main />
+//                 <Footer />
+//               </>
+//             }
+//           />
+//           <Route
+//             path='/about-project'
+//             element={
+//               <>
+//                 <Header
+//                   isOpen={isContextBurgerMenuOpened}
+//                   setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
+//                   onClose={closeAllPopups}
+//                   onCloseOverlay={handleOverlayClick}
+//                   isLoggedIn={isLoggedIn}
+//                 />
+//                 <AboutProject />
+//                 <Techs />
+//                 <AboutMe />
+//                 <Footer />
+//               </>
+//             }
+//           />
+//           <Route
+//             path='/movies'
+//             element={
+//               <ProtectedRoute isLoggedIn={isLoggedIn}>
+//                 <>
+//                   <Header
+//                     isOpen={isContextBurgerMenuOpened}
+//                     setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
+//                     onClose={closeAllPopups}
+//                     onCloseOverlay={handleOverlayClick}
+//                     isLoggedIn={isLoggedIn}
+//                   />
+//                   <Movies
+//                     serverError={serverError}
+//                     setSearchInputValue={setSearchInputValue}
+//                     searchInputValue={searchInputValue}
+//                     setIsLoading={setIsLoading}
+//                     isShortFilm={isShortFilm}
+//                     setIsShortFilm={setIsShortFilm}
+//                     isLoading={isLoading}
+//                     handleMovieLikeToggle={handleMovieLikeToggle}
+//                     movies={movies}
+//                     savedMovies={savedMovies}
+//                     setSavedMovies={setSavedMovies}
+//                   />
+//                   <Footer />
+//                 </>
+//               </ProtectedRoute>
+//             }
+//           />
+//           <Route
+//             path='/saved-movies'
+//             element={
+//               <ProtectedRoute isLoggedIn={isLoggedIn}>
+//                 <>
+//                   <Header
+//                     isOpen={isContextBurgerMenuOpened}
+//                     setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
+//                     onClose={closeAllPopups}
+//                     onCloseOverlay={handleOverlayClick}
+//                     isLoggedIn={isLoggedIn}
+//                   />
+//                   <SavedMovies
+//                     isShortSavedFilm={isShortSavedFilm}
+//                     setIsShortSavedFilm={setIsShortSavedFilm}
+//                     setSearchInputValue={setSearchSavedInputValue}
+//                     searchInputValue={searchSavedInputValue}
+//                     serverError={serverError}
+//                     setIsLoading={setIsLoading}
+//                     isShortFilm={isShortFilm}
+//                     setIsShortFilm={setIsShortFilm}
+//                     isLoading={isLoading}
+//                     handleMovieLikeToggle={handleMovieLikeToggle}
+//                     movies={savedMovies}
+//                     savedMovies={savedMovies}
+//                     setSavedMovies={setSavedMovies}
+//                   />
+//                   <Footer />
+//                 </>
+//               </ProtectedRoute>
+//             }
+//           />
+//           <Route
+//             path='/profile'
+//             element={
+//               <ProtectedRoute isLoggedIn={isLoggedIn}>
+//                 <>
+//                   <Header
+//                     isOpen={isContextBurgerMenuOpened}
+//                     setIsContextBurgerMenuOpened={setIsContextBurgerMenuOpened}
+//                     onClose={closeAllPopups}
+//                     onCloseOverlay={handleOverlayClick}
+//                     isLoggedIn={isLoggedIn}
+//                   />
+//                   <Profile
+//                     setServerError={setServerError}
+//                     serverError={serverError}
+//                     handleExitUser={handleExitUser}
+//                     isUpdatedUser={isUpdatedUser}
+//                     setIsUpdatedUser={setIsUpdatedUser}
+//                     onUpdateUser={handleUpdateUser}
+//                   />
+//                 </>
+//               </ProtectedRoute>
+//             }
+//           />
+//           <Route
+//             path='/signup'
+//             element={
+//               isLoggedIn ? (
+//                 <Navigate
+//                   replace
+//                   to='/'
+//                 />
+//               ) : (
+//                 <Register
+//                   setServerError={setServerError}
+//                   serverError={serverError}
+//                   onSubmit={handleRegisterSubmit}
+//                 />
+//               )
+//             }
+//           />
+//           <Route
+//             path='/signin'
+//             element={
+//               isLoggedIn ? (
+//                 <Navigate
+//                   replace
+//                   to='/'
+//                 />
+//               ) : (
+//                 <Login
+//                   setServerError={setServerError}
+//                   serverError={serverError}
+//                   onSubmit={handleLoginSubmit}
+//                 />
+//               )
+//             }
+//           />
+//           <Route
+//             path='*'
+//             element={<NotFound />}
+//           />
+//         </Routes>
+//         <InfoTooltip
+//           isOpen={isInfoTooltipOpened}
+//           onCloseOverlay={handleOverlayClick}
+//           onClose={closeAllPopups}
+//           status={isInfoTooltipStatus}
+//           text={isInfoTooltipStatus ? 'Результат успешен!' : serverError.text}
+//         />
+//       </div>
+//     </CurrentUserContext.Provider>
+//   );
+// }
+// export default App;

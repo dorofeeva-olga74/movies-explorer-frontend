@@ -1,17 +1,30 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
+import { SCREEN_WIDTH_LARGE,
+  SCREEN_WIDTH_MEDIUM,
+  SCREEN_WIDTH_SMALL,
+  MOVIES_COUNT_LARGE,
+  MOVIES_COUNT_MEDIUM,
+  MOVIES_COUNT_SMALL,
+  MOVIES_COUNT_EXTRA_SMALL,
+  // MOVIES_TO_ADD_LARGE,
+  // MOVIES_TO_ADD_MEDIUM,
+  // MOVIES_TO_ADD_SMALL,
+  // MOVIES_TO_ADD_EXTRA_SMALL,
+  SHORT_FILM_DURATION, 
+  RESIZE_DELAY,} from '../../utils/constants.js';
 
 // получаю колличество фильмов на странице при первой загрузке
 const getMoviesCountOnPage = (screenWidth) => {
-  if (screenWidth > 1150) {
-    return 16;
-  } else if (screenWidth > 800) {
-    return 12;
-  } else if (screenWidth > 650) {
-    return 8;
+  if (screenWidth > SCREEN_WIDTH_LARGE) {
+    return MOVIES_COUNT_LARGE;
+  } else if (screenWidth > SCREEN_WIDTH_MEDIUM) {
+    return MOVIES_COUNT_MEDIUM;
+  } else if (screenWidth > SCREEN_WIDTH_SMALL) {
+    return MOVIES_COUNT_SMALL;
   } else {
-    return 5;
+    return MOVIES_COUNT_EXTRA_SMALL;
   }
 };
 
@@ -36,7 +49,7 @@ function MoviesCardList({
     // фильтрация для короткометражек
     const filtredMovies = movies.filter((movie) => {
       const currentIsShort = location.pathname === '/movies' ? isShortFilm : isShortSavedFilm;
-      if (currentIsShort && movie.duration > 40) {
+      if (currentIsShort && movie.duration > SHORT_FILM_DURATION) {
         return false;
       }
       setMoviesCountOnPage(getMoviesCountOnPage(screenWidth));
@@ -55,7 +68,7 @@ function MoviesCardList({
     ? (visibleMovies = allFilteredMovies.slice(0, moviesCountOnPage))
     : (visibleMovies = allFilteredMovies);
 
-  // управление кнопкой 'Еще'
+     // управление кнопкой 'Еще'
   function handleMoreClick() {
     let moviesToAd = 0;
     if (screenWidth > 1150) {
@@ -70,6 +83,15 @@ function MoviesCardList({
     // добавление фильмов для дополнительной загрузки на страницу к предыдущим
     setMoviesCountOnPage((prevCount) => prevCount + moviesToAd);
   }
+  // Функция для обработки нажатия на кнопку 'Еще'
+// const handleMoreClick = () => {
+//   let moviesToAdd = screenWidth > SCREEN_WIDTH_LARGE ? MOVIES_TO_ADD_LARGE :
+//                     screenWidth > SCREEN_WIDTH_MEDIUM ? MOVIES_TO_ADD_MEDIUM :
+//                     screenWidth > SCREEN_WIDTH_SMALL ? MOVIES_TO_ADD_SMALL :
+//                     MOVIES_TO_ADD_EXTRA_SMALL;
+  
+//   setMoviesCountOnPage((prevCount) => prevCount + moviesToAdd);
+// }
 
   // создаю переменную для хранения идентификатора таймера
   const timerId = useRef(null);
@@ -92,7 +114,7 @@ function MoviesCardList({
         clearTimeout(timerId.current);
       }
       // запускаю новый таймер с задержкой 300 миллисекунд
-      timerId.current = setTimeout(handleResize, 300);
+      timerId.current = setTimeout(handleResize, RESIZE_DELAY);
     });
 
     return () => {
@@ -123,8 +145,8 @@ function MoviesCardList({
                 <div className='movies__gap'></div>
                 <h2 className='movies-error-title'>Ничего не найдено.</h2>
                 {/* <h2 className='movies-error-title'>
-                  {savedMovies.length > 0 ? 'Ничего не найдено' : 'Нет сохраненных фильмов.'}
-                </h2> */}
+                  {allFilteredMovies.length === 0 && movies.length > 0 ? 'Ничего не найдено' : 'Нет сохраненных фильмов.'}                 
+                </h2> */}              
               </>
             )}
           </section>

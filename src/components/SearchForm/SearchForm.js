@@ -25,9 +25,9 @@ function SearchForm({
       setIsLoading(true);
       setIsFirstSubmit(false);
       if (location.pathname === '/movies') {
-        localStorage.setItem('searchInputValue', searchInputValue);
+        localStorage.setItem('searchInputValue', localeInput); // записывается в локальное хранилище данные текущего инпута - на странице "Фильмы"
       } else {
-        localStorage.setItem('searchSavedInputValue', searchInputValue);
+        localStorage.setItem('searchSavedInputValue', localeInput);// записывается в локальное хранилище данные текущего инпута - на странице "Сохраненные фильмы"
       }
       setSearchInputValue(localeInput);
       localStorage.setItem('isShortFilm', isShortFilm);
