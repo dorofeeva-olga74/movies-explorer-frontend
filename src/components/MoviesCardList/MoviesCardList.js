@@ -8,10 +8,10 @@ import { SCREEN_WIDTH_LARGE,
   MOVIES_COUNT_MEDIUM,
   MOVIES_COUNT_SMALL,
   MOVIES_COUNT_EXTRA_SMALL,
-  // MOVIES_TO_ADD_LARGE,
-  // MOVIES_TO_ADD_MEDIUM,
-  // MOVIES_TO_ADD_SMALL,
-  // MOVIES_TO_ADD_EXTRA_SMALL,
+  MOVIES_TO_ADD_LARGE,
+  MOVIES_TO_ADD_MEDIUM,
+  MOVIES_TO_ADD_SMALL,
+  MOVIES_TO_ADD_EXTRA_SMALL,
   SHORT_FILM_DURATION, 
   RESIZE_DELAY,} from '../../utils/constants.js';
 
@@ -67,31 +67,16 @@ function MoviesCardList({
   location.pathname === '/movies'
     ? (visibleMovies = allFilteredMovies.slice(0, moviesCountOnPage))
     : (visibleMovies = allFilteredMovies);
-
-     // управление кнопкой 'Еще'
-  function handleMoreClick() {
-    let moviesToAd = 0;
-    if (screenWidth > 1150) {
-      moviesToAd = 4;
-    } else if (screenWidth > 800) {
-      moviesToAd = 3;
-    } else if (screenWidth > 650) {
-      moviesToAd = 2;
-    } else {
-      moviesToAd = 2;
-    }
-    // добавление фильмов для дополнительной загрузки на страницу к предыдущим
-    setMoviesCountOnPage((prevCount) => prevCount + moviesToAd);
-  }
+ 
   // Функция для обработки нажатия на кнопку 'Еще'
-// const handleMoreClick = () => {
-//   let moviesToAdd = screenWidth > SCREEN_WIDTH_LARGE ? MOVIES_TO_ADD_LARGE :
-//                     screenWidth > SCREEN_WIDTH_MEDIUM ? MOVIES_TO_ADD_MEDIUM :
-//                     screenWidth > SCREEN_WIDTH_SMALL ? MOVIES_TO_ADD_SMALL :
-//                     MOVIES_TO_ADD_EXTRA_SMALL;
+const handleMoreClick = () => {
+  let moviesToAdd = screenWidth > SCREEN_WIDTH_LARGE ? MOVIES_TO_ADD_LARGE :
+                    screenWidth > SCREEN_WIDTH_MEDIUM ? MOVIES_TO_ADD_MEDIUM :
+                    screenWidth > SCREEN_WIDTH_SMALL ? MOVIES_TO_ADD_SMALL :
+                    MOVIES_TO_ADD_EXTRA_SMALL;
   
-//   setMoviesCountOnPage((prevCount) => prevCount + moviesToAdd);
-// }
+  setMoviesCountOnPage((prevCount) => prevCount + moviesToAdd);
+}
 
   // создаю переменную для хранения идентификатора таймера
   const timerId = useRef(null);
