@@ -38,7 +38,7 @@ function App() {
 
   const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки на странице "Фильмы"
   const [searchSavedInputValue, setSearchSavedInputValue] = useState(
-    // значение поисковой строки на странице "сохраненные фильмы2"
+    // значение поисковой строки на странице "сохраненные фильмы"
     localStorage.getItem('searchSavedInputValue') ?? ''
   );
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
@@ -131,11 +131,11 @@ function App() {
   // ИЗМЕНЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
   const handleUpdateUser = async ({ name, email }) => {
     // Проверяю изменились ли данные
-    // if (name === currentUser.name && email === currentUser.email) {
-    //   console.log('Данные не изменились.');
-    //   setIsUpdatedUser(false);
-    //   return;
-    // }
+    if (name === currentUser.name && email === currentUser.email) {
+      console.log('Данные не изменились.');
+      setIsUpdatedUser(false);
+      return;
+    }
     try {
       setIsLoading(true);
       setIsUpdatedUser(true); // состояние изменения данных пользователя
@@ -143,7 +143,7 @@ function App() {
       setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(true);
       setServerError({ isValid: false, text: '' });
-      setCurrentUser(updatedUserData); // Обновляю данные пользователя в приложении
+      setCurrentUser(updatedUserData); //  Обновляю данные пользователя в приложении
     } catch (err) {
       if (err.includes('409')) {
         setServerError((prev) => ({
@@ -322,12 +322,12 @@ function App() {
           });
           setIsLoggedIn(true);
         })
-        .catch((err) => console.log(err))
-    //     .finally(() => {
-    //       setIsTokenChecked(true);
-    //     });
-    // } else {
-    //   setIsTokenChecked(true);
+        .catch((err) => console.log(err));
+      //     .finally(() => {
+      //       setIsTokenChecked(true);
+      //     });
+      // } else {
+      //   setIsTokenChecked(true);
     }
   }, []);
 
@@ -447,8 +447,8 @@ function App() {
                     setServerError={setServerError}
                     serverError={serverError}
                     handleExitUser={handleExitUser}
-                    isLoading={isUpdatedUser}
-                    setIsLoading={setIsUpdatedUser}
+                    isUpdatedUser={isUpdatedUser}
+                    setIsUpdatedUser={setIsUpdatedUser}
                     onUpdateUser={handleUpdateUser}
                   />
                 </>
