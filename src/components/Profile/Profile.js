@@ -13,8 +13,7 @@ export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpd
   const handleChangeButtonClick = () => {
     setIsUpdatedUser(true);    
   };
-  const handleSubmit = useCallback(
-    (e) => {
+  const handleSubmit = useCallback((e) => {
       // Запрещаю браузеру переходить по адресу формы
       e.preventDefault();   
       // Передаю значения управляемых компонентов во внешний обработчик

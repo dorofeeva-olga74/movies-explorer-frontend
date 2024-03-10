@@ -160,6 +160,7 @@ function App() {
       setIsLoading(false);
     } finally {
       setIsLoading(false);
+      setIsUpdatedUser(false); // Сброс состояния изменения данных пользователя
     }
   };
 
