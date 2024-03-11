@@ -35,21 +35,5 @@ export {
     MOVIES_TO_ADD_EXTRA_SMALL,
     SHORT_FILM_DURATION,
     RESIZE_DELAY,
-}
-
- // управление кнопкой 'Еще'
-  // function handleMoreClick() {
-  //   let moviesToAd = 0;
-  //   if (screenWidth > 1150) {
-  //     moviesToAd = 4;
-  //   } else if (screenWidth > 800) {
-  //     moviesToAd = 3;
-  //   } else if (screenWidth > 650) {
-  //     moviesToAd = 2;
-  //   } else {
-  //     moviesToAd = 2;
-  //   }
-  //   // добавление фильмов для дополнительной загрузки на страницу к предыдущим
-  //   setMoviesCountOnPage((prevCount) => prevCount + moviesToAd);
-  // }
+} 
   
