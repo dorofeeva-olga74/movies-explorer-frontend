@@ -253,6 +253,7 @@ function App() {
       email: '',
     }));
     setSavedMovies([]); // Очищаю локальное состояние сохраненных фильмов
+    setIsShortFilm(null);
     localStorage.removeItem('token');
     localStorage.removeItem('isShortFilm');
     localStorage.removeItem('allMovies');
@@ -260,7 +261,7 @@ function App() {
     localStorage.removeItem('searchInputValue');
     localStorage.removeItem('searchSavedInputValue');
     localStorage.removeItem('allFilteredMovies'); // Очищаю локальное хранилище все отфильтрованных фильмов
-    navigate('/');   
+    navigate('/');
   };
   // ОБРАБОТЧИК Escape
   const isSomePopupOpen = isInfoTooltipOpened || isContextBurgerMenuOpened;
@@ -291,7 +292,7 @@ function App() {
       };
     }
   }, [isSomePopupOpen]);
-  
+
   // Восстановление состояния isShortFilm из localStorage при инициализации компонента
   useEffect(() => {
     const savedIsShortFilm = localStorage.getItem('isShortFilm');
@@ -305,7 +306,7 @@ function App() {
     getCurrentUser();
     getAllLikedMovies();
     localStorage.getItem('allMovies', movies);
-    localStorage.getItem('allSavedMovies', savedMovies);    
+    localStorage.getItem('allSavedMovies', savedMovies);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 

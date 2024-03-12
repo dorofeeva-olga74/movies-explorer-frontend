@@ -77,8 +77,8 @@ export class MainApi {
 }
 //создание экземпляра класса MainApi
 export const mainApi = new MainApi({
-  url: 'https://api.jupiter.movies.nomoredomainsmonster.ru',
-  // url: 'http://localhost:3000',
+  // url: 'https://api.jupiter.movies.nomoredomainsmonster.ru',
+  url: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

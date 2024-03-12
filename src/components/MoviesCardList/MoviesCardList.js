@@ -59,7 +59,7 @@ function MoviesCardList({
       return nameRU || nameEN;
     });
     localStorage.setItem('allFilteredMovies', JSON.stringify(filtredMovies));
-    localStorage.setItem('isShortFilm', String(isShortFilm));
+    localStorage.setItem('isShortFilm', isShortFilm);
     return filtredMovies;
   }, [searchInputValue, location.pathname, movies, isShortFilm, screenWidth, isShortSavedFilm]);
 

@@ -5,7 +5,7 @@ import Preloader from '../Preloader/Preloader.js';
 
 function SavedMovies({
   setSearchInputValue,
-  searchInputValue, 
+  searchInputValue,
   setIsLoading,
   isShortFilm,
   setIsShortFilm,
@@ -16,38 +16,35 @@ function SavedMovies({
   setSavedMovies,
   serverError,
   isShortSavedFilm,
-  setIsShortSavedFilm, 
-}) {  
-
+  setIsShortSavedFilm,
+}) {
   return (
-    <>
-      <section className='saved-movies movies'>
-        <SearchForm  
-          setSearchInputValue={setSearchInputValue}
-          searchInputValue={searchInputValue}         
-          setIsLoading={setIsLoading}
+    <section className='saved-movies movies'>
+      <SearchForm
+        setSearchInputValue={setSearchInputValue}
+        searchInputValue={searchInputValue}
+        setIsLoading={setIsLoading}
+        isShortFilm={isShortFilm}
+        setIsShortFilm={setIsShortFilm}
+        isShortSavedFilm={isShortSavedFilm}
+        setIsShortSavedFilm={setIsShortSavedFilm}
+        savedMovies={savedMovies}
+        setSavedMovies={setSavedMovies}
+      />
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <MoviesCardList
+          serverError={serverError}
+          handleMovieLikeToggle={handleMovieLikeToggle}
+          movies={movies}
+          searchInputValue={searchInputValue}
           isShortFilm={isShortFilm}
-          setIsShortFilm={setIsShortFilm}
-          isShortSavedFilm={isShortSavedFilm}
-          setIsShortSavedFilm={setIsShortSavedFilm}                 
           savedMovies={savedMovies}
-          setSavedMovies={setSavedMovies}
+          isShortSavedFilm={isShortSavedFilm}
         />
-        {isLoading ? (
-          <Preloader />
-        ) : (
-          <MoviesCardList
-            serverError={serverError}
-            handleMovieLikeToggle={handleMovieLikeToggle}
-            movies={movies}
-            searchInputValue={searchInputValue}
-            isShortFilm={isShortFilm}
-            savedMovies={savedMovies}            
-            isShortSavedFilm={isShortSavedFilm}
-          />
-        )}
-      </section>
-    </>
+      )}
+    </section>
   );
 }
 export default SavedMovies;
