@@ -108,7 +108,7 @@ function App() {
         }));
       }
       console.error(err?.reason || err?.message);
-      setIsInfoTooltipOpened(true);
+      // setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(false);
     } finally {
       setIsLoading(false);
@@ -154,7 +154,7 @@ function App() {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'При обновлении профиля произошла ошибка.' }));
       }
       console.error(err?.reason || err?.message);
-      setIsInfoTooltipOpened(true);
+      // setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(false);
     } finally {
       setIsLoading(false);
