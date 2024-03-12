@@ -38,7 +38,7 @@ function App() {
 
   const [searchInputValue, setSearchInputValue] = useState(localStorage.getItem('searchInputValue') ?? ''); // значение поисковой строки на странице "Фильмы"
   const [searchSavedInputValue, setSearchSavedInputValue] = useState(
-    // значение поисковой строки на странице "сохраненные фильмы2"
+    // значение поисковой строки на странице "сохраненные фильмы"
     localStorage.getItem('searchSavedInputValue') ?? ''
   );
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
@@ -108,7 +108,7 @@ function App() {
         }));
       }
       console.error(err?.reason || err?.message);
-      // setIsInfoTooltipOpened(false);
+      setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(false);
     } finally {
       setIsLoading(false);
@@ -154,7 +154,7 @@ function App() {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'При обновлении профиля произошла ошибка.' }));
       }
       console.error(err?.reason || err?.message);
-      // setIsInfoTooltipOpened(true);
+      setIsInfoTooltipOpened(true);
       setIsInfoTooltipStatus(false);
     } finally {
       setIsLoading(false);
@@ -260,7 +260,7 @@ function App() {
     localStorage.removeItem('searchInputValue');
     localStorage.removeItem('searchSavedInputValue');
     localStorage.removeItem('allFilteredMovies'); // Очищаю локальное хранилище все отфильтрованных фильмов
-    navigate('/');
+    navigate('/');   
   };
   // ОБРАБОТЧИК Escape
   const isSomePopupOpen = isInfoTooltipOpened || isContextBurgerMenuOpened;
@@ -291,10 +291,12 @@ function App() {
       };
     }
   }, [isSomePopupOpen]);
-
+  
+  // Восстановление состояния isShortFilm из localStorage при инициализации компонента
   useEffect(() => {
-    localStorage.setItem('isShortFilm', String(isShortFilm));
-  }, [isShortFilm]);
+    const savedIsShortFilm = localStorage.getItem('isShortFilm');
+    setIsShortFilm(savedIsShortFilm);
+  }, []);
 
   // ПОЛУЧЕНИЕ данных пользователя при входе, загрузка всех фильмов и загрузка сохраненных фильмов
   useEffect(() => {
@@ -303,8 +305,7 @@ function App() {
     getCurrentUser();
     getAllLikedMovies();
     localStorage.getItem('allMovies', movies);
-    localStorage.getItem('allSavedMovies', savedMovies);
-    localStorage.getItem('isShortFilm', isShortFilm);
+    localStorage.getItem('allSavedMovies', savedMovies);    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 

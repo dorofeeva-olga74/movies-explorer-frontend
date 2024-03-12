@@ -29,8 +29,7 @@ function SearchForm({
       } else {
         localStorage.setItem('searchSavedInputValue', localeInput);// записывается в локальное хранилище данные текущего инпута - на странице "Сохраненные фильмы"
       }
-      setSearchInputValue(localeInput);
-      localStorage.setItem('isShortFilm', isShortFilm);
+      setSearchInputValue(localeInput);     
       setError('');
     } catch (e) {
       console.error(e?.reason || e?.message);
@@ -105,6 +104,7 @@ function SearchForm({
         <span className='search__error'>{error}</span>
         <span className='search__filter-checkbox-conteiner'>
           <FilterCheckbox
+            handleSearchSubmit={handleSearchSubmit}
             isShortFilm={isShortFilm}
             setIsShortFilm={setIsShortFilm}
             isShortSavedFilm={isShortSavedFilm}
