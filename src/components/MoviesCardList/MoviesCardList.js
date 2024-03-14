@@ -127,11 +127,13 @@ const handleMoreClick = () => {
               ))
             ) : (
               <>
-                <div className='movies__gap'></div>
-                <h2 className='movies-error-title'>Ничего не найдено.</h2>
-                {/* <h2 className='movies-error-title'>
-                  {allFilteredMovies.length === 0 && movies.length > 0 ? 'Ничего не найдено' : 'Нет сохраненных фильмов.'}                 
-                </h2> */}              
+                <div className='movies__gap'></div>                
+                <h2 className='movies-error-title'>
+                  {location.pathname === '/saved-movies' 
+                  ? allFilteredMovies.length === 0 && movies.length > 0 ? 'Ничего не найдено' : 'У Вас нет сохраненных фильмов.'
+                  : searchInputValue && allFilteredMovies.length === 0 && movies.length > 0 ? 'Ничего не найдено' : ''                
+                 }
+                </h2>              
               </>
             )}
           </section>

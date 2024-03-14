@@ -1,8 +1,9 @@
 import React from 'react';
 
-const Preloader = () => {
+const Preloader = ({isInitialLoad}) => {
+  
   return (
-    <div className='preloader'>
+    <div className={`preloader ${isInitialLoad ? 'preloader__initial' : ''}`}>      
       <div className='preloader__container'>
         <span className='preloader__round'></span>
       </div>

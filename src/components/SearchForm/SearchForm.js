@@ -15,29 +15,34 @@ function SearchForm({
   setSavedMovies,
 }) {
   const location = useLocation();
-  const [error, setError] = useState('');
-  const [isFirstSubmit, setIsFirstSubmit] = useState(true); // Флаг первого сабмита
+  const [error, setError] = useState('');  
   const [localeInput, setLocaleInput] = useState(searchInputValue);
-
+  
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
-      setIsFirstSubmit(false);
+      setIsLoading(true);     
       if (location.pathname === '/movies') {
         localStorage.setItem('searchInputValue', localeInput); // записывается в локальное хранилище данные текущего инпута - на странице "Фильмы"
       } else {
         localStorage.setItem('searchSavedInputValue', localeInput);// записывается в локальное хранилище данные текущего инпута - на странице "Сохраненные фильмы"
       }
-      setSearchInputValue(localeInput);     
-      setError('');
+      setSearchInputValue(localeInput);      
+      if (savedMovies.length === 0 && location.pathname === '/saved-movies') {
+          setError('Перейдите на страницу "Фильмы" и сохраните, понравившийся фильм');
+        } else {
+          if (!localeInput) {
+             setError('Введите ключевое слово');
+          } else {
+          setError('');
+        }       
+      }              
     } catch (e) {
       console.error(e?.reason || e?.message);
       setIsLoading(false);
     } finally {
       setIsLoading(false);
-    }
-    setIsFirstSubmit(false);
+    }    
   };
 
   useEffect(() => {
@@ -59,11 +64,7 @@ function SearchForm({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-
-  useEffect(() => {
-    !isFirstSubmit && !searchInputValue ? setError('Нужно ввести ключевое слово') : setError('');
-  }, [isFirstSubmit, searchInputValue]);
-
+  
   // обработать изменение значения input
   const handleInputChange = (e) => {
     setLocaleInput(e.target.value);

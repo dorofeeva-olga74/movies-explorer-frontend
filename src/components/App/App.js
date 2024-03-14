@@ -19,6 +19,7 @@ import Footer from '../Footer/Footer.js';
 import InfoTooltip from '../InfoTooltip/InfoTooltip.js';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.js';
 import { register, authorize, checkToken, getProfileInfo, changeUserData } from '../../utils/Auth.js';
+import imgSuccess from '../../images/img__success.svg';
 
 function App() {
   const [isTokenChecked, setIsTokenChecked] = useState(false); // состояние, которое отслеживает, была ли проверка токена завершена
@@ -42,7 +43,6 @@ function App() {
     localStorage.getItem('searchSavedInputValue') ?? ''
   );
   const [isInfoTooltipOpened, setIsInfoTooltipOpened] = useState(false);
-  const [isInfoTooltipStatus, setIsInfoTooltipStatus] = useState(false);
   const [isContextBurgerMenuOpened, setIsContextBurgerMenuOpened] = useState(false);
 
   const navigate = useNavigate();
@@ -58,8 +58,6 @@ function App() {
       setIsLoading(true);
       const userDataAfterReg = await register(data);
       setCurrentUser(userDataAfterReg);
-      setIsInfoTooltipStatus(true);
-      setIsInfoTooltipOpened(true);
       await handleLoginSubmit({ email: data.email, password: data.password }); // логиним сразу пользователя
       setIsLoggedIn(true);
       setServerError({ isValid: false, text: '' });
@@ -70,13 +68,10 @@ function App() {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'Пользователь с таким email уже существует.' }));
       } else {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'При регистрации пользователя произошла ошибка.' }));
-        // setIsInfoTooltipOpened(false);
-        setIsInfoTooltipStatus(false);
         console.error(err?.reason || err?.message);
       }
     } finally {
       setIsLoading(false);
-      // setIsInfoTooltipOpened(false);
     }
   };
 
@@ -88,8 +83,9 @@ function App() {
       localStorage.setItem('token', response.token); // сохраняем токен в хранилище
       setIsLoggedIn(true);
       navigate('/movies');
-      setIsInfoTooltipStatus(true);
-      setIsInfoTooltipOpened(true);
+      setTimeout(() => {
+        !isLoading ? setIsInfoTooltipOpened(true) : setIsInfoTooltipOpened(false); // Если загрузка завершена, показываем попап
+      }, 500);
       setServerError({ isValid: false, text: '' });
     } catch (err) {
       if (err.includes('401')) {
@@ -108,17 +104,15 @@ function App() {
         }));
       }
       console.error(err?.reason || err?.message);
-      // setIsInfoTooltipOpened(true);
-      setIsInfoTooltipStatus(false);
     } finally {
       setIsLoading(false);
+      setIsInfoTooltipOpened(false);
     }
   };
 
   // ПОЛУЧЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ
   const getCurrentUser = async () => {
-    try {
-      // получаю токен из localStorage
+    try { // получаю токен из localStorage
       const token = localStorage.getItem('token');
       const currentUser = await getProfileInfo(token);
       setCurrentUser(currentUser);
@@ -139,10 +133,11 @@ function App() {
       setIsLoading(true);
       setIsUpdatedUser(true); // состояние изменения данных пользователя
       const updatedUserData = await changeUserData({ name, email });
-      setIsInfoTooltipStatus(true);
-      setIsInfoTooltipOpened(true);
       setServerError({ isValid: false, text: '' });
       setCurrentUser(updatedUserData); // Обновляю данные пользователя в приложении
+      setTimeout(() => {
+        !isLoading ? setIsInfoTooltipOpened(true) : setIsInfoTooltipOpened(false); // Если загрузка завершена, показываем попап
+      }, 500);
     } catch (err) {
       if (err.includes('409')) {
         setServerError((prev) => ({
@@ -154,10 +149,9 @@ function App() {
         setServerError((prev) => ({ ...prev, isValid: true, text: 'При обновлении профиля произошла ошибка.' }));
       }
       console.error(err?.reason || err?.message);
-      // setIsInfoTooltipOpened(true);
-      setIsInfoTooltipStatus(false);
     } finally {
       setIsLoading(false);
+      setIsInfoTooltipOpened(false);
     }
   };
 
@@ -269,7 +263,6 @@ function App() {
   // ЗАКРЫТИЕ ПОПАПОВ
   const closeAllPopups = () => {
     setIsContextBurgerMenuOpened(false);
-    setIsInfoTooltipStatus(false);
     setIsInfoTooltipOpened(false);
   };
   // ЗАКРЫТИЕ ПО ОВЕРЛЕЮ
@@ -332,7 +325,7 @@ function App() {
   }, []);
 
   return !isTokenChecked ? (
-    <Preloader /> // Компонент загрузки
+    <Preloader isInitialLoad={true} /> // Компонент загрузки
   ) : (
     <CurrentUserContext.Provider value={{ currentUser }}>
       <div className='app'>
@@ -496,13 +489,15 @@ function App() {
             element={<NotFound />}
           />
         </Routes>
-        <InfoTooltip
-          isOpen={isInfoTooltipOpened}
-          onCloseOverlay={handleOverlayClick}
-          onClose={closeAllPopups}
-          status={isInfoTooltipStatus}
-          text={isInfoTooltipStatus ? 'Результат успешен!' : serverError.text}
-        />
+        {!isLoading && (
+          <InfoTooltip
+            isOpen={isInfoTooltipOpened}
+            onCloseOverlay={handleOverlayClick}
+            onClose={closeAllPopups}
+            src={imgSuccess}
+            text={'Результат успешен!'}
+          />
+        )}
       </div>
     </CurrentUserContext.Provider>
   );
