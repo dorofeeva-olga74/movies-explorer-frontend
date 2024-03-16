@@ -16,7 +16,7 @@ function Movies({
   setSavedMovies,
   serverError,
 }) {
-  console.log(movies)
+  
   return (
     <main className='main'>
       <section className='movies'>

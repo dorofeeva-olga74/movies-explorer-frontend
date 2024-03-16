@@ -82,7 +82,7 @@ function Login({ onSubmit, serverError, setServerError }) {
           <span className='register__error-server'>{serverError.text}</span>
           <button
             type='submit'
-            className='register__submit login__submit'
+            className='register__submit'
             disabled={!isValid || (serverError.isValid === true && serverError.text !== '')}>
             Войти
           </button>

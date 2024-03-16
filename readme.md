@@ -24,8 +24,6 @@
 
 [HTML], [React], [JavaScript], [Webpack], [CSS], [Express.js], [Git]
 
-//для ревьюрера: касательно ситуации с лайками, (если первый пользователь поставил лайки карточкам, сделал логаут, и следом без перезагрузки сайта регистрируется новый пользователь, он лайков предыдущего пользователя не видит, я протестировала не один раз, возможно эта проблема может быть в других браузерах, на Гугл хром, в яндекс браузере и майкрософт едж - все работает как нужно)
-
 - Ссылка на [PR](https://github.com/dorofeeva-olga74/movies-explorer-frontend/pull/2)
 - Ссылка на [frontend](https://jupiter.movies.nomoredomainsmonster.ru/)
 - Ссылка на [backend](https://api.jupiter.movies.nomoredomainsmonster.ru)

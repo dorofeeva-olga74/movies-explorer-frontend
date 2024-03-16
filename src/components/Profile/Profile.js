@@ -33,6 +33,7 @@ export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpd
   }, [values.name, currentUser.name, values.email, currentUser.email, setIsUpdatedUser]);
 
   const handleClick = (e) => {
+    e.stopPropagation();
     if (!isUpdatedUser) {
       handleChangeButtonClick(e);
     } else {
@@ -47,7 +48,7 @@ export function Profile({ isUpdatedUser, setIsUpdatedUser, handleExitUser, onUpd
     <main>
       <section className='profile'>
         <h2 className='profile__title'>{`Привет, ${currentUser.name}!`}</h2>
-        <form noValidate
+        <form noValidate        
           className='profile__form'
           onSubmit={handleClick}>
           <div className='profile__data-box'>

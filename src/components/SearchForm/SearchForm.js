@@ -29,7 +29,7 @@ function SearchForm({
       }
       setSearchInputValue(localeInput);      
       if (savedMovies.length === 0 && location.pathname === '/saved-movies') {
-          setError('Перейдите на страницу "Фильмы" и сохраните, понравившийся фильм');
+          setError('У Вас нет сохраненных фильмов. Перейдите на страницу "Фильмы" и сохраните, понравившийся фильм');
         } else {
           if (!localeInput) {
              setError('Введите ключевое слово');

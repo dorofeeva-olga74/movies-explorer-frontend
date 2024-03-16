@@ -47,8 +47,9 @@
     font-weight: 400;
     line-height: normal;
     grid-column: 1 / -1;
-    margin: 68px auto 80px auto;
-    padding: 0px 46px 10px 60px;    
+    /* margin: 68px auto 80px auto; */
+    /* padding: 0px 46px 10px 60px;     */
+    padding: 0 0 6px 0;
   }
 
 @media screen and (max-width:550px) {
