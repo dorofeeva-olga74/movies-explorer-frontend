@@ -266,7 +266,7 @@ function App() {
     setIsInfoTooltipOpened(false);
   };
   // ЗАКРЫТИЕ ПО ОВЕРЛЕЮ
-  const handleOverlayClick = (e) => {
+  const handleOverlayClick = (e) => {    
     if (e.target?.className?.includes('context-burger-menu') || e.target?.className?.includes('popup')) {
       closeAllPopups();
     }
@@ -495,7 +495,7 @@ function App() {
             onCloseOverlay={handleOverlayClick}
             onClose={closeAllPopups}
             src={imgSuccess}
-            text={'Результат успешен!'}
+            text={'Ваше действие успешно выполнено!'}
           />
         )}
       </div>

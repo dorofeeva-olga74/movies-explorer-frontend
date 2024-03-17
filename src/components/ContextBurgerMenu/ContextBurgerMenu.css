@@ -10,12 +10,13 @@
     z-index: 5;
     transition: all ease-in-out 1s;
     position: absolute;
-    opacity: 30%; 
+    opacity: 30%;    
 }
 
 .context-burger-menu_opened {
     visibility: visible;
     opacity: 1;
+    transition: all ease-in-out 1s;
     position: fixed;    
 }
 
@@ -114,28 +115,17 @@
     .context-burger-menu__container {         
         width: 100%;  
     }
-
     .context-burger-menu__close-button {
         top: 13.39px;
         right: 18.40px;
     }
-    .context-burger-menu__account-button {        
-        bottom: 46px;        
-    }    
-
     .context-burger-menu__nav {
         margin: 144px 10px 0 10px;
         gap: 24px;
     }
-
     .context-burger-menu__current::after {
         bottom: -9px;
     }
-
-    .context-burger-menu__account {
-        bottom: 46px;
-    }
-
     .context-burger-menu__icon {
         background: #313131;
         margin: 1px 0 0 6px;
