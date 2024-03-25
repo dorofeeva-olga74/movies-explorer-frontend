@@ -8,7 +8,10 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 32px 20px;
 }
-
+.movies__gap {
+    height: 140px;
+    display: flex;
+}
 @media screen and (max-width:1150px) {
     .movies__card-list {
         grid-template-columns: repeat(3, 1fr);
@@ -28,5 +31,5 @@
         padding: 40px 10px 30px 10px;
         grid-template-columns: repeat(1, 1fr);
         gap: 20px;
-    }
+    }    
 }

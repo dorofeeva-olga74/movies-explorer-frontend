@@ -44,3 +44,7 @@ body {
 @import url(./components/NotFound/NotFound.css);
 /* Preloader */
 @import url(./components/Preloader/Preloader.css);
+/*InfoTool*/
+@import url(./components/InfoTooltip/InfoTooltip.css);
+/*Error*/
+@import url(./components/Error/Error.css);

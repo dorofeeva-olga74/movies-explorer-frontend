@@ -1,0 +1,25 @@
+.error {
+  color: #FF3055;
+  text-align: left;
+  font-family: Inter;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12.1px;
+  margin-top: 0;
+  height: 24px;
+  margin: 0 0 5px 0;
+  padding: 0;
+}
+
+.error__profile {
+  text-align: center;
+}
+
+@media screen and (max-width:550px) {
+  .error {
+    font-size: 7px;
+    line-height: 10.1px;
+    height: 16px;
+  }
+}

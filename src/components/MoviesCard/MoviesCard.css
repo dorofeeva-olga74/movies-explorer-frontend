@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    width: 100%;    
 }
 
 .card__img {
@@ -55,8 +56,6 @@
 .card__delete {
     display: flex;
     background: url('../../images/delete.svg');
-    /* width: 16px;
-    height: 100%; */
     width: 12px;
     height: 15px;
     flex-shrink: 0;
