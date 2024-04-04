@@ -1,7 +1,10 @@
 .movies {
     display: flex;
-    flex-direction: column;
-    width: 100%;
+    flex-direction: column;    
+    width: 100vw;   
+    max-width: 100%;
+    margin: 0;    
+    padding: 0;   
 }
 
 .movies__more-adding {
@@ -35,6 +38,19 @@
 .movies__more-adding:hover {
     opacity: 0.8;
 }
+.movies-error-title {
+    color: #fff;
+    text-align: center;
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    grid-column: 1 / -1;
+    /* margin: 68px auto 80px auto; */
+    /* padding: 0px 46px 10px 60px;     */
+    padding: 0 0 6px 0;
+  }
 
 @media screen and (max-width:550px) {
     .movies__more-adding {
